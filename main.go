@@ -21,6 +21,7 @@ func main() {
 	mux.GET("/hvapro/:item", scraper.GetHvapro)
 	mux.GET("/sg", sg.QueryEntry)
 
+	mux.GET("/ncore", scraper.Ncore)
 	mux.POST("/test", testHandler)
 
 	http.ListenAndServe(":5500", mux)

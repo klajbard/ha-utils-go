@@ -15,7 +15,10 @@ import (
 )
 
 func QueryEntry(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	req, _ := http.NewRequest("GET", "https://www.steamgifts.com", nil)
+	req, err := http.NewRequest("GET", "https://www.steamgifts.com", nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	req.Header.Set("Referer", "www.steamgifts.com")
 	req.AddCookie(&http.Cookie{Name: "PHPSESSID", Value: os.Getenv("SG_SESSID")})
@@ -44,7 +47,10 @@ func enterGiveAway(link string, token string) {
 		"do":         {"entry_insert"},
 		"code":       {id},
 	}
-	req, _ := http.NewRequest("POST", "https://www.steamgifts.com/ajax.php", strings.NewReader(payload.Encode()))
+	req, err := http.NewRequest("POST", "https://www.steamgifts.com/ajax.php", strings.NewReader(payload.Encode()))
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
 	req.Header.Set("Content-Length", strconv.Itoa(len(payload.Encode())))
@@ -57,6 +63,9 @@ func enterGiveAway(link string, token string) {
 	}
 	defer resp.Body.Close()
 
-	ret, _ := ioutil.ReadAll(resp.Body)
+	ret, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	fmt.Println(string(ret))
 }
