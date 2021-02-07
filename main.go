@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"./bumpha"
 	"./consumptions"
 	"./scraper"
 	"./sg"
@@ -20,8 +21,9 @@ func main() {
 	mux.GET("/jofogas/:item", scraper.GetJofogas)
 	mux.GET("/hvapro/:item", scraper.GetHvapro)
 	mux.GET("/sg", sg.QueryEntry)
-
 	mux.GET("/ncore", scraper.Ncore)
+	mux.GET("/bumpha/:fid/:name", bumpha.BumpHa)
+
 	mux.POST("/test", testHandler)
 
 	http.ListenAndServe(":5500", mux)
