@@ -9,9 +9,22 @@ import (
 	"strconv"
 	"strings"
 
+	"../utils"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/julienschmidt/httprouter"
 )
+
+var ncoreMap = []string{
+	"ncore_daily_rank",
+	"ncore_weekly_rank",
+	"ncore_monthly_rank",
+	"ncore_last_month_rank",
+	"ncore_allowed",
+	"ncore_active",
+	"ncore_hitnrun_possible",
+	"ncore_hitnrun_month",
+	"ncore_possible_hit_n_run",
+}
 
 func Ncore(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	sessid := ""
@@ -76,8 +89,18 @@ func getData(sessid string) {
 			currentData = strings.TrimSuffix(s.Text(), ":")
 		} else {
 			result[currentData] = s.Text()
+			updateHassio(currentData, s.Text(), ncoreMap[index/2])
 		}
 	})
+}
 
-	fmt.Println(result)
+func updateHassio(name string, value string, sensorName string) {
+	sensor := utils.Sensor{
+		State: value,
+		Attributes: utils.Attributes{
+			Friendly_name: name,
+			Icon:          "mdi:server-network",
+		},
+	}
+	utils.SetState("sensor."+sensorName, sensor)
 }
