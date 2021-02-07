@@ -22,6 +22,7 @@ func main() {
 	mux.GET("/hvapro/:item", scraper.GetHvapro)
 	mux.GET("/sg", sg.QueryEntry)
 	mux.GET("/ncore", scraper.Ncore)
+	mux.GET("/fixer", scraper.ScrapeFixer)
 	mux.GET("/bumpha/:fid/:name", bumpha.BumpHa)
 
 	mux.POST("/test", testHandler)
