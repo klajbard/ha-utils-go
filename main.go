@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"./awscost"
 	"./bumpha"
 	"./consumptions"
 	"./scraper"
@@ -25,6 +26,7 @@ func main() {
 	mux.GET("/fixer", scraper.ScrapeFixer)
 	mux.GET("/covid", scraper.GetCovid)
 	mux.GET("/bumpha/:fid/:name", bumpha.BumpHa)
+	mux.GET("/awscost", awscost.GetAwsCost)
 
 	mux.POST("/test", testHandler)
 
