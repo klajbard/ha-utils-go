@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"../config"
+	"../slack"
 	"github.com/PuerkitoBio/goquery"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -68,9 +69,8 @@ func scrapeItem(url string, itemQuery string, titleQuery string, priceQuery stri
 		if !isThere {
 			err := insertWatcherItem(name, link, price)
 			log.Printf("Item: %s - %s\n", name, price)
-			// TODO: Turn on when actually using
-			// slackNotif := fmt.Sprintf("*%s - %s*\n%s", name, price, link)
-			// slack.NotifySlack("SLACK_PRESENCE", slackNotif)
+			slackNotif := fmt.Sprintf("*%s - %s*\n%s", name, price, link)
+			slack.NotifySlack("SLACK_PRESENCE", slackNotif)
 			if err != nil {
 				log.Printf("Something happened while inserting %s", name)
 			}

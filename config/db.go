@@ -12,6 +12,7 @@ var Fuels *mgo.Collection
 var Scrapers *mgo.Collection
 var Watcher *mgo.Collection
 var Covid *mgo.Collection
+var AWS *mgo.Collection
 
 func init() {
 	s, err := mgo.Dial("mongodb://localhost:27017/hassio")
@@ -29,6 +30,7 @@ func init() {
 	Fuels = DB.C("fuels")
 	Watcher = DB.C("watcher")
 	Covid = DB.C("covid")
+	AWS = DB.C("aws")
 
 	log.Println("MongoDB connected")
 }

@@ -1,27 +1,69 @@
 package main
 
 import (
+	"log"
+	"os"
+	"time"
+
 	"./awscost"
 	"./bumpha"
-	"./consumptions"
 	"./scraper"
 	"./sg"
 )
 
 func main() {
-	bumpha.Update("fidentifier123123123123", "item1")
-	if false {
-		awscost.Update()
-		consumptions.GetAllCons("device-name")
-		consumptions.GetCons("device-name", "2021-02-08")
-		consumptions.PutCons("device-name", "2021-02-08", 80.18)
-		scraper.UpdateCovid()
-		scraper.UpdateCurrencies()
-		scraper.UpdateFuelPrice()
-		scraper.UpdateNcore()
-		scraper.PicoScraper()
-		scraper.GetJofogas("samsung")
-		scraper.GetHvapro("samsung")
-		sg.QueryEntry()
+	tick := time.NewTicker(5 * time.Second)
+	tickerCount := 0
+	ticker := make(chan int)
+
+	go func() {
+		for {
+			i := <-ticker
+			scraper.PicoScraper()
+			if i%12 == 0 {
+				log.Println("Item watcher")
+				scraper.GetJofogas("raspberry")
+				scraper.GetHvapro("raspberry")
+			}
+			if i%60 == 0 {
+				log.Println("Sg")
+				sg.QueryEntry()
+			}
+			if i%120 == 0 {
+				log.Println("DHT")
+			}
+			if i%360 == 0 {
+				log.Println("COVID")
+				scraper.UpdateCovid()
+			}
+			if i%360 == 0 {
+				log.Println("Bump HVA")
+				bumpha.Update(os.Getenv("HVA_ITEM"), "bontatlan_kitvision_escape_hd5w_1080p_akciokamera_3")
+			}
+			if i%1440 == 0 {
+				log.Println("Ncore")
+				scraper.UpdateNcore()
+			}
+			if i%2880 == 0 {
+				log.Println("Fuel")
+				scraper.UpdateFuelPrice()
+			}
+			if i%8640 == 0 {
+				log.Println("Fixer")
+				scraper.UpdateCurrencies()
+			}
+			if i%8640 == 0 {
+				log.Println("AWS")
+				awscost.Update()
+			}
+		}
+	}()
+
+	for {
+		select {
+		case <-tick.C:
+			ticker <- tickerCount
+			tickerCount++
+		}
 	}
 }

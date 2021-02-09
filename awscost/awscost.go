@@ -4,12 +4,24 @@ import (
 	"log"
 	"time"
 
+	"../config"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/costexplorer"
+	"gopkg.in/mgo.v2/bson"
 )
 
+type Cost struct {
+	Cost string    // `json:"cost" bson:"cost"`
+	Date time.Time // `json:"date" bson:"date"`
+}
+
 func Update() {
+	cost := getRecentCost()
+	now := time.Now()
+	if !(now.Sub(cost.Date).Hours() > 96) && cost.Cost != "" {
+		return
+	}
 	currentMonth := time.Now().Format("2006-01")
 	nextMonth := time.Now().AddDate(0, 1, 0).Format("2006-01")
 	sess, err := session.NewSession(&aws.Config{
@@ -30,6 +42,25 @@ func Update() {
 	if err != nil {
 		log.Fatalf("[AWSCOST] Unable to generate report, %v/n", err)
 	}
+	currentCost := *result.ResultsByTime[0].Total["BlendedCost"].Amount
+	insertCost(currentCost)
 
-	log.Println("[AWSCOST] Cost Report:", *result.ResultsByTime[0].Total["BlendedCost"].Amount)
+	log.Println("[AWSCOST] Cost Report:", currentCost)
+}
+
+func getRecentCost() Cost {
+	cost := Cost{}
+	err := config.AWS.Find(nil).Sort("-date").Limit(1).One(&cost)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return cost
+}
+
+func insertCost(cost string) {
+	err := config.AWS.Insert(bson.M{"cost": cost, "date": time.Now()})
+	if err != nil {
+		log.Println(err)
+	}
 }

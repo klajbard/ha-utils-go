@@ -33,12 +33,12 @@ func UpdateCurrencies() {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		print(err)
+		log.Println(err)
 	}
 
 	err = json.Unmarshal([]byte(string(body)), &out)
 	if err != nil {
-		print(err)
+		log.Println(err)
 	}
 
 	rates := out.Rates
