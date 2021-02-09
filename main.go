@@ -20,6 +20,7 @@ func main() {
 		for {
 			i := <-ticker
 			scraper.PicoScraper()
+			scraper.UpdateBestBuy()
 			if i%12 == 0 {
 				log.Println("Item watcher")
 				scraper.GetJofogas("raspberry")
@@ -35,8 +36,6 @@ func main() {
 			if i%360 == 0 {
 				log.Println("COVID")
 				scraper.UpdateCovid()
-			}
-			if i%360 == 0 {
 				log.Println("Bump HVA")
 				bumpha.Update(os.Getenv("HVA_ITEM"), "bontatlan_kitvision_escape_hd5w_1080p_akciokamera_3")
 			}
@@ -51,8 +50,6 @@ func main() {
 			if i%8640 == 0 {
 				log.Println("Fixer")
 				scraper.UpdateCurrencies()
-			}
-			if i%8640 == 0 {
 				log.Println("AWS")
 				awscost.Update()
 			}
