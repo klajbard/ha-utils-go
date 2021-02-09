@@ -11,10 +11,9 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/julienschmidt/httprouter"
 )
 
-func QueryEntry(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func QueryEntry() {
 	req, err := http.NewRequest("GET", "https://www.steamgifts.com", nil)
 	if err != nil {
 		log.Fatalln(err)

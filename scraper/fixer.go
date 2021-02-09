@@ -11,10 +11,9 @@ import (
 	"strings"
 
 	"../utils"
-	"github.com/julienschmidt/httprouter"
 )
 
-func ScrapeFixer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func UpdateCurrencies() {
 	out := struct {
 		Success   string
 		Timestamp string
@@ -43,6 +42,8 @@ func ScrapeFixer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	rates := out.Rates
+
+	log.Println("[FIXER] Updated currencies")
 
 	for _, val := range base {
 		rate := rates[target] / rates[val]

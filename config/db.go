@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fmt"
+	"log"
 
 	"gopkg.in/mgo.v2"
 )
@@ -26,8 +26,9 @@ func init() {
 	DB = s.DB("hassio")
 	Consumptions = DB.C("consumptions")
 	Scrapers = DB.C("scrapers")
+	Fuels = DB.C("fuels")
 	Watcher = DB.C("watcher")
 	Covid = DB.C("covid")
 
-	fmt.Println("You connected to your mongo database.")
+	log.Println("MongoDB connected")
 }

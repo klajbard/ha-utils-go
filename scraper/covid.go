@@ -11,7 +11,6 @@ import (
 	"../config"
 	"../slack"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/julienschmidt/httprouter"
 )
 
 type Covid struct {
@@ -20,7 +19,8 @@ type Covid struct {
 	Cured    int // `json:"cured" bson:"cured"`
 }
 
-func GetCovid(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func UpdateCovid() {
+	log.Println("[COVID] Querying...")
 	covid := &Covid{}
 	resp, err := http.Get("https://koronavirus.gov.hu")
 	if err != nil {
@@ -47,12 +47,15 @@ func GetCovid(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	delta := sum(covid) - sum(&recentCovid)
+
+	log.Printf("[COVID] Changes: %d\n", delta)
 
 	if !(reflect.DeepEqual(&recentCovid, covid)) {
-		delta := sum(covid) - sum(&recentCovid)
 		result := fmt.Sprintf("*COVID*\n:biohazard_sign: *%d*\n:skull: *%d*\n:heartpulse: *%d*\n:chart_with_upwards_trend: *%d*", covid.Infected, covid.Dead, covid.Cured, delta)
 		slack.NotifySlack("SLACK_PRESENCE", result)
-		updateCovid(covid)
+		log.Println("[COVID] Updated! New cases " + string(delta))
+		insertCovid(covid)
 	}
 }
 
@@ -70,7 +73,7 @@ func getNum(input string) int {
 	return szam
 }
 
-func updateCovid(covid *Covid) (err error) {
+func insertCovid(covid *Covid) (err error) {
 	err = config.Covid.Insert(covid)
 	return err
 }

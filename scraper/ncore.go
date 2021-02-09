@@ -11,7 +11,6 @@ import (
 
 	"../utils"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/julienschmidt/httprouter"
 )
 
 var ncoreMap = []string{
@@ -26,7 +25,7 @@ var ncoreMap = []string{
 	"ncore_possible_hit_n_run",
 }
 
-func Ncore(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func UpdateNcore() {
 	sessid := ""
 	login := fmt.Sprintf("nev=%s&pass=%s", os.Getenv("NCORE_USERNAME"), os.Getenv("NCORE_PASSWORD"))
 	jar, _ := cookiejar.New(nil)
@@ -59,6 +58,8 @@ func Ncore(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			sessid = cookie.Value
 		}
 	}
+
+	log.Println("[NCORE] Updating profile statistics")
 
 	getData(sessid)
 }

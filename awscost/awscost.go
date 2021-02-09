@@ -1,17 +1,15 @@
 package awscost
 
 import (
-	"fmt"
-	"net/http"
+	"log"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/costexplorer"
-	"github.com/julienschmidt/httprouter"
 )
 
-func GetAwsCost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func Update() {
 	currentMonth := time.Now().Format("2006-01")
 	nextMonth := time.Now().AddDate(0, 1, 0).Format("2006-01")
 	sess, err := session.NewSession(&aws.Config{
@@ -30,8 +28,8 @@ func GetAwsCost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		}),
 	})
 	if err != nil {
-		fmt.Printf("Unable to generate report, %v", err)
+		log.Fatalf("[AWSCOST] Unable to generate report, %v/n", err)
 	}
 
-	fmt.Println("Cost Report:", *result.ResultsByTime[0].Total["BlendedCost"].Amount)
+	log.Println("[AWSCOST] Cost Report:", *result.ResultsByTime[0].Total["BlendedCost"].Amount)
 }

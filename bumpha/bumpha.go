@@ -11,12 +11,9 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/julienschmidt/httprouter"
 )
 
-func BumpHa(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	fid := ps.ByName("fid")
-	name := ps.ByName("name")
+func Update(fid string, name string) {
 	link := fmt.Sprintf("https://hardverapro.hu/apro/%s/hsz_1-50.html", name)
 
 	resp, err := http.Get(link)
@@ -69,5 +66,5 @@ func bumpItem(fid string, pid string) {
 		print(err)
 	}
 
-	fmt.Println(string(body))
+	log.Println("[BUMPHA] " + string(body))
 }

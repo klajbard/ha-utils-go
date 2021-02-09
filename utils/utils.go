@@ -8,6 +8,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func SetState(sensor string, payload interface{}) {
@@ -35,4 +37,18 @@ func SetState(sensor string, payload interface{}) {
 	defer resp.Body.Close()
 
 	fmt.Println(resp.Status)
+}
+
+func ScrapeFirst(url string, query string) string {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return doc.Find(query).First().Text()
 }

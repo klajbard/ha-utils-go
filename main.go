@@ -1,40 +1,27 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-
 	"./awscost"
 	"./bumpha"
 	"./consumptions"
 	"./scraper"
 	"./sg"
-	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
-	mux := httprouter.New()
-	mux.GET("/cons/:device", consumptions.GetAllCons)
-	mux.GET("/cons/:device/:date", consumptions.GetCons)
-	mux.PUT("/cons/:device", consumptions.PutCons)
-	mux.GET("/scrape/pico", scraper.PicoScraper)
-	mux.GET("/scrape/fuel", scraper.GetFuel)
-	mux.GET("/jofogas/:item", scraper.GetJofogas)
-	mux.GET("/hvapro/:item", scraper.GetHvapro)
-	mux.GET("/sg", sg.QueryEntry)
-	mux.GET("/ncore", scraper.Ncore)
-	mux.GET("/fixer", scraper.ScrapeFixer)
-	mux.GET("/covid", scraper.GetCovid)
-	mux.GET("/bumpha/:fid/:name", bumpha.BumpHa)
-	mux.GET("/awscost", awscost.GetAwsCost)
-
-	mux.POST("/test", testHandler)
-
-	http.ListenAndServe(":5500", mux)
-}
-
-func testHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	r.ParseForm()
-
-	fmt.Println(r.Form)
+	bumpha.Update("fidentifier123123123123", "item1")
+	if false {
+		awscost.Update()
+		consumptions.GetAllCons("device-name")
+		consumptions.GetCons("device-name", "2021-02-08")
+		consumptions.PutCons("device-name", "2021-02-08", 80.18)
+		scraper.UpdateCovid()
+		scraper.UpdateCurrencies()
+		scraper.UpdateFuelPrice()
+		scraper.UpdateNcore()
+		scraper.PicoScraper()
+		scraper.GetJofogas("samsung")
+		scraper.GetHvapro("samsung")
+		sg.QueryEntry()
+	}
 }
