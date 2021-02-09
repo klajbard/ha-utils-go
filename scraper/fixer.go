@@ -15,8 +15,8 @@ import (
 
 func UpdateCurrencies() {
 	out := struct {
-		Success   string
-		Timestamp string
+		Success   bool
+		Timestamp int64
 		Base      string
 		Date      string
 		Rates     map[string]float64
