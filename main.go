@@ -26,6 +26,8 @@ func main() {
 				log.Println("Item watcher")
 				scraper.GetJofogas("raspberry")
 				scraper.GetHvapro("raspberry")
+				scraper.GetJofogas("zigbee")
+				scraper.GetHvapro("zigbee")
 			}
 			if i%60 == 0 {
 				log.Println("Sg")
