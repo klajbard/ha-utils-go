@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"../config"
+	"../utils"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/costexplorer"
@@ -44,6 +45,7 @@ func Update() {
 	}
 	currentCost := *result.ResultsByTime[0].Total["BlendedCost"].Amount
 	insertCost(currentCost)
+	updateHassio(currentCost)
 
 	log.Println("[AWSCOST] Cost Report:", currentCost)
 }
@@ -63,4 +65,16 @@ func insertCost(cost string) {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func updateHassio(cost string) {
+	sensor := utils.Sensor{
+		State: cost,
+		Attributes: utils.Attributes{
+			Friendly_name:       "AWS monthly cost",
+			Unit_of_measurement: "$",
+			Icon:                "mdi:currency-usd",
+		},
+	}
+	utils.SetState("sensor.aws_monthly_cost", sensor)
 }
