@@ -18,12 +18,16 @@ type Watcher struct {
 	Price string // `json:"price" bson:"price"`
 }
 
+// Queries Jofogas for a specific 'item' and
+// sends message to Slack if theres new item
 func GetJofogas(item string) {
 	url := fmt.Sprintf("https://www.jofogas.hu/magyarorszag?f=p&q=%s", item)
 
 	scrapeItem(url, ".general-item", ".subject", ".price-value")
 }
 
+// Queries Hardverapro for a specific 'item' and
+// sends message to Slack if theres new item
 func GetHvapro(item string) {
 	url := fmt.Sprintf("https://hardverapro.hu/aprok/keres.php?stext=%s", item)
 
@@ -33,20 +37,11 @@ func GetHvapro(item string) {
 func checkWatcherItem(link string) bool {
 	item := Watcher{}
 	err := config.Watcher.Find(bson.M{"link": link}).One(&item)
-	if err != nil {
-		return false
-	}
-
-	return true
+	return err == nil
 }
 
 func insertWatcherItem(title string, link string, price string) error {
-	err := config.Watcher.Insert(bson.M{"title": title, "price": price, "link": link})
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return config.Watcher.Insert(bson.M{"title": title, "price": price, "link": link})
 }
 
 func scrapeItem(url string, itemQuery string, titleQuery string, priceQuery string) {

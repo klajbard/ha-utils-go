@@ -13,6 +13,8 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+// Enters the upcoming SG giveaway if there is
+// enought points left.
 func QueryEntry() {
 	req, err := http.NewRequest("GET", "https://www.steamgifts.com", nil)
 	if err != nil {

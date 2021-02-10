@@ -13,6 +13,14 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+// Sends a bump for the selected item on "hardverapro"
+// *fid* - payload value of 'fidentifier' when bumping
+// To gather the fidentifier value, the easiest way is to capture
+// from Chrome Dev Tools -> Network tab. Check the 'Preserve log'
+// and do the manual bump. When the bump is done search for the
+// post request of "felhoz.php", then check the request body
+// *name* - name of the item
+// The easiest way is to simply copy from the URL
 func Update(fid string, name string) {
 	link := fmt.Sprintf("https://hardverapro.hu/apro/%s/hsz_1-50.html", name)
 
@@ -63,7 +71,7 @@ func bumpItem(fid string, pid string) {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		print(err)
+		log.Fatalln(err)
 	}
 
 	log.Println("[BUMPHA] " + string(body))

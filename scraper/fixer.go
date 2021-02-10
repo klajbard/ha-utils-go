@@ -13,6 +13,9 @@ import (
 	"../utils"
 )
 
+// Queries fixer.io for currencies HUF based and
+// updates homeassistant corresponding sensor values
+// sensor.usd, sensor.eur, sensor.gbp
 func UpdateCurrencies() {
 	out := struct {
 		Success   bool

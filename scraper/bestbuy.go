@@ -19,6 +19,9 @@ type BestBuy struct {
 	Url    string // `json:"url" bson:"url"`
 }
 
+// Checks for the "#akcio" hashtag of
+// the bestbuy topic from prohardver and updates
+// via Slack if new post is available
 func UpdateBestBuy() {
 	link := "https://prohardver.hu/tema/bestbuy_topik_akcio_ajanlasakor_akcio_hashtag_kote/friss.html"
 	resp, err := http.Get(link)

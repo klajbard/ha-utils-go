@@ -14,6 +14,8 @@ type Fuel struct {
 	Text string // `json:"text" bson:"text"`
 }
 
+// Queries for average fuel prices and updates
+// via Slack if theres any new post
 func UpdateFuelPrice() {
 	result := utils.ScrapeFirst("https://holtankoljak.hu/uzemanyag_arvaltozasok#tartalom", "#Holtankoljak_cikk_leaderboard_top_1 ~ .row .container a")
 	recentResult := getRecentFuelPrice()
@@ -39,12 +41,9 @@ func getRecentFuelPrice() string {
 }
 
 func saveFuelPrice(text string) (err error) {
-	err = nil
 	if text == "" {
-		err = errors.New("Text should have length")
-		return err
+		return errors.New("Text should have length")
 	}
 
-	err = config.Fuels.Insert(bson.M{"text": text})
-	return err
+	return config.Fuels.Insert(bson.M{"text": text})
 }

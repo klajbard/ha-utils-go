@@ -25,6 +25,8 @@ var ncoreMap = []string{
 	"ncore_possible_hit_n_run",
 }
 
+// Queries nCore for personal statistics and update
+// homeassistant corresponding values
 func UpdateNcore() {
 	sessid := ""
 	login := fmt.Sprintf("nev=%s&pass=%s", os.Getenv("NCORE_USERNAME"), os.Getenv("NCORE_PASSWORD"))

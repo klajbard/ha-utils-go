@@ -8,6 +8,9 @@ import (
 	"github.com/d2r2/go-dht"
 )
 
+// Read from DHT22 sensor which should
+// be connected to GPIO 4 (Data pin) and updates
+// homeassistant sensor.rpi_temperature value
 func ReadDHT(pin int) {
 	temp, hum, _, err :=
 		dht.ReadDHTxxWithRetry(dht.DHT22, pin, false, 10)

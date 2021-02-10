@@ -17,6 +17,10 @@ type Cost struct {
 	Date time.Time // `json:"date" bson:"date"`
 }
 
+// Sends a query to AWS Cost Explorer if the latest record
+// was created at least 96 hours (4 days) ago
+// or if the data is not present yet it will proceed
+// and updates homeassistant sensor.aws_monthly_cost value
 func Update() {
 	cost := getRecentCost()
 	now := time.Now()
@@ -29,6 +33,9 @@ func Update() {
 		Region: aws.String("eu-central-1")},
 	)
 	svc := costexplorer.New(sess)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	result, err := svc.GetCostAndUsage(&costexplorer.GetCostAndUsageInput{
 		TimePeriod: &costexplorer.DateInterval{

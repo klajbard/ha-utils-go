@@ -15,6 +15,8 @@ type ScraperModel struct {
 	Value string // `json:"value" bson:"value"`
 }
 
+// Queries for RPI Pico availability
+// Sends Slack message if it is in stock
 func PicoScraper() {
 	url := "https://www.optimusdigital.ro/en/raspberry-pi-boards/12024-raspberry-pi-pico-728886755172.html"
 	result := utils.ScrapeFirst(url, "#quantityAvailable")
@@ -42,8 +44,5 @@ func getScraperData(name string) (string, error) {
 func saveScraperData(name string, value string) error {
 	data := ScraperModel{name, value}
 	_, err := config.Scrapers.Upsert(bson.M{"name": name}, &data)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

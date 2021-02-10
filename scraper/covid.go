@@ -19,6 +19,9 @@ type Covid struct {
 	Cured    int // `json:"cured" bson:"cured"`
 }
 
+// Check hungarian govs official covid page for
+// latest update on number of cases and updates
+// via Slack if new data is posted
 func UpdateCovid() {
 	log.Println("[COVID] Querying...")
 	covid := &Covid{}
@@ -65,17 +68,16 @@ func sum(covid *Covid) int {
 
 func getNum(input string) int {
 	trimmed := strings.ReplaceAll(input, " ", "")
-	szam, err := strconv.Atoi(trimmed)
+	num, err := strconv.Atoi(trimmed)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	return szam
+	return num
 }
 
 func insertCovid(covid *Covid) (err error) {
-	err = config.Covid.Insert(covid)
-	return err
+	return config.Covid.Insert(covid)
 }
 
 func getLastCovid() (Covid, error) {
