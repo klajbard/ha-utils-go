@@ -7,6 +7,7 @@ import (
 
 	"./awscost"
 	"./bumpha"
+	"./dht"
 	"./scraper"
 	"./sg"
 )
@@ -32,6 +33,7 @@ func main() {
 			}
 			if i%120 == 0 {
 				log.Println("DHT")
+				dht.ReadDHT(4)
 			}
 			if i%360 == 0 {
 				log.Println("COVID")
