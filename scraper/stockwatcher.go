@@ -2,7 +2,6 @@ package scraper
 
 import (
 	"fmt"
-	"log"
 
 	"../config"
 	"../slack"
