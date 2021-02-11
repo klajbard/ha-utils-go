@@ -21,7 +21,7 @@ func PicoScraper() {
 	result := utils.ScrapeFirst(url, "#quantityAvailable")
 	recentResult, err := getScraperData("pico")
 	if (err != nil) || recentResult != result {
-		slackNotif := fmt.Sprintf("Presence checker changed on Raspberry Pico: %s \n%s", result, url)
+		slackNotif := fmt.Sprintf("<%s|Raspberry Pico>: %s", url, result)
 		slack.NotifySlack("SLACK_PRESENCE", slackNotif)
 		err := saveScraperData("pico", result)
 		if err != nil {

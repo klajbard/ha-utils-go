@@ -65,7 +65,7 @@ func scrapeItem(url string, itemQuery string, titleQuery string, priceQuery stri
 		if !isThere {
 			err := insertWatcherItem(name, link, price)
 			log.Printf("Item: %s - %s\n", name, price)
-			slackNotif := fmt.Sprintf("*%s - %s*\n%s", name, price, link)
+			slackNotif := fmt.Sprintf("<%s|*%s - %s*>\n", link, name, price)
 			slack.NotifySlack("SLACK_PRESENCE", slackNotif)
 			if err != nil {
 				log.Printf("Something happened while inserting %s", name)
