@@ -3,6 +3,7 @@ package slack
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -18,7 +19,7 @@ import (
 func NotifySlack(group string, text string) {
 	channel := os.Getenv(group)
 	if channel == "" {
-		utils.PrintError("Unable to get ENV variable")
+		utils.PrintError(errors.New("Unable to get ENV variable"))
 	}
 	reqBody, err := json.Marshal(map[string]string{
 		"text": text,
