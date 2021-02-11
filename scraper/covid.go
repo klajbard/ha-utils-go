@@ -10,6 +10,7 @@ import (
 
 	"../config"
 	"../slack"
+	"../utils"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -27,12 +28,12 @@ func UpdateCovid() {
 	covid := &Covid{}
 	resp, err := http.Get("https://koronavirus.gov.hu")
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	infectedPest := getNum(doc.Find("#api-fertozott-pest").Text())
@@ -48,7 +49,7 @@ func UpdateCovid() {
 
 	recentCovid, err := getLastCovid()
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 	delta := sum(covid) - sum(&recentCovid)
 
@@ -70,7 +71,7 @@ func getNum(input string) int {
 	trimmed := strings.ReplaceAll(input, " ", "")
 	num, err := strconv.Atoi(trimmed)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	return num

@@ -31,7 +31,7 @@ func UpdateCurrencies() {
 	link := fmt.Sprintf("http://data.fixer.io/api/latest?access_key=%s&base=EUR", os.Getenv("FIXERAPI"))
 	resp, err := http.Get(link)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)

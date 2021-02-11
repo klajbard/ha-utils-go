@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"../config"
+	"../utils"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -17,7 +18,7 @@ func GetAllCons(device string) {
 	cons := []Consumption{}
 	err := config.Consumptions.Find(bson.M{"device": device}).All(&cons)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	log.Println(cons)
@@ -41,7 +42,7 @@ func PutCons(device string, date string, watt float64) {
 	cons := Consumption{device, date, watt}
 	_, err := config.Consumptions.Upsert(bson.M{"device": cons.Device, "date": cons.Date}, &cons)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	log.Println("[CONS] Update succeed for " + device)

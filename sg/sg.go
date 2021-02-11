@@ -3,13 +3,13 @@ package sg
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
 
+	"../utils"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -18,7 +18,7 @@ import (
 func QueryEntry() {
 	req, err := http.NewRequest("GET", "https://www.steamgifts.com", nil)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	req.Header.Set("Referer", "www.steamgifts.com")
@@ -26,13 +26,13 @@ func QueryEntry() {
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 	defer resp.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	ga_url, _ := doc.Find(".page__heading + div .giveaway__heading__name").First().Attr("href")
@@ -50,7 +50,7 @@ func enterGiveAway(link string, token string) {
 	}
 	req, err := http.NewRequest("POST", "https://www.steamgifts.com/ajax.php", strings.NewReader(payload.Encode()))
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
@@ -60,13 +60,13 @@ func enterGiveAway(link string, token string) {
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 	defer resp.Body.Close()
 
 	ret, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 	fmt.Println(string(ret))
 }

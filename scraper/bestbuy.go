@@ -8,6 +8,7 @@ import (
 
 	"../config"
 	"../slack"
+	"../utils"
 	"github.com/PuerkitoBio/goquery"
 
 	"gopkg.in/mgo.v2/bson"
@@ -26,12 +27,12 @@ func UpdateBestBuy() {
 	link := "https://prohardver.hu/tema/bestbuy_topik_akcio_ajanlasakor_akcio_hashtag_kote/friss.html"
 	resp, err := http.Get(link)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 	doc.Find(".msg-list:not(.thread-content) .media").Each(func(id int, s *goquery.Selection) {
 		anchorElem := s.Find(".msg-head-author .msg-num a")
@@ -56,7 +57,7 @@ func UpdateBestBuy() {
 func findBestBuy(anchor string) (bb BestBuy) {
 	err := config.BestBuy.Find(bson.M{"anchor": anchor}).One(&bb)
 	if err != nil && err.Error() != "not found" {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 	return
 }
@@ -64,6 +65,6 @@ func findBestBuy(anchor string) (bb BestBuy) {
 func insertBestBuy(bb BestBuy) {
 	err := config.BestBuy.Insert(bb)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 }

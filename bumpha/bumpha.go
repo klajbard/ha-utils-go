@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"../utils"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -26,12 +27,12 @@ func Update(fid string, name string) {
 
 	resp, err := http.Get(link)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	last_bump := doc.Find("[title=\"Utolsó UP dátuma\"]").Text()
@@ -56,7 +57,7 @@ func bumpItem(fid string, pid string) {
 	link := "https://hardverapro.hu/muvelet/apro/felhoz.php?id=" + pid
 	req, err := http.NewRequest("POST", link, strings.NewReader(payload))
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
@@ -66,12 +67,12 @@ func bumpItem(fid string, pid string) {
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	log.Println("[BUMPHA] " + string(body))

@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"../utils"
 )
 
 // Slack notification uses hooks to send messages
@@ -16,25 +18,25 @@ import (
 func NotifySlack(group string, text string) {
 	channel := os.Getenv(group)
 	if channel == "" {
-		log.Fatalln("Unable to get ENV variable")
+		utils.PrintError("Unable to get ENV variable")
 	}
 	reqBody, err := json.Marshal(map[string]string{
 		"text": text,
 	})
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	resp, err := http.Post("https://hooks.slack.com/services/"+channel,
 		"application/json", bytes.NewBuffer(reqBody))
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	log.Println(string(body))

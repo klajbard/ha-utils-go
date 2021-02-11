@@ -35,7 +35,7 @@ func Update() {
 	)
 	svc := costexplorer.New(sess)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	result, err := svc.GetCostAndUsage(&costexplorer.GetCostAndUsageInput{
@@ -62,7 +62,7 @@ func getRecentCost() Cost {
 	cost := Cost{}
 	err := config.AWS.Find(nil).Sort("-date").Limit(1).One(&cost)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	return cost

@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -18,12 +17,12 @@ func SetState(sensor string, payload interface{}) {
 
 	payloadString, err := json.Marshal(payload)
 	if err != nil {
-		log.Fatalln(err)
+		PrintError(err)
 	}
 
 	req, err := http.NewRequest("POST", link, strings.NewReader(string(payloadString)))
 	if err != nil {
-		log.Fatalln(err)
+		PrintError(err)
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -32,7 +31,7 @@ func SetState(sensor string, payload interface{}) {
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		PrintError(err)
 	}
 	defer resp.Body.Close()
 
@@ -42,13 +41,17 @@ func SetState(sensor string, payload interface{}) {
 func ScrapeFirst(url string, query string) string {
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalln(err)
+		PrintError(err)
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		PrintError(err)
 	}
 
 	return doc.Find(query).First().Text()
+}
+
+func PrintError(err error) {
+	fmt.Printf("[**Error**] %s", err)
 }

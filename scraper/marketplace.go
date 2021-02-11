@@ -8,6 +8,7 @@ import (
 
 	"../config"
 	"../slack"
+	"../utils"
 	"github.com/PuerkitoBio/goquery"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -47,12 +48,12 @@ func insertWatcherItem(title string, link string, price string) error {
 func scrapeItem(url string, itemQuery string, titleQuery string, priceQuery string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	doc.Find(itemQuery).Each(func(_ int, s *goquery.Selection) {

@@ -24,7 +24,7 @@ func UpdateFuelPrice() {
 		log.Println("[FUEL] New post with price updates is available.")
 		err := saveFuelPrice(result)
 		if err != nil {
-			log.Fatalln(err)
+			utils.PrintError(err)
 		}
 	}
 }
@@ -34,7 +34,7 @@ func getRecentFuelPrice() string {
 
 	err := config.Fuels.Find(nil).Sort("-_id").Limit(1).One(&fuel)
 	if err != nil {
-		log.Fatalln(err)
+		utils.PrintError(err)
 	}
 
 	return fuel.Text
