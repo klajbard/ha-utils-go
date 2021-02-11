@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"./awscost"
@@ -16,11 +18,12 @@ func main() {
 	tick := time.NewTicker(10 * time.Second)
 	tickerCount := 0
 	ticker := make(chan int)
+	terminate := make(chan os.Signal)
+	signal.Notify(terminate, syscall.SIGTERM, syscall.SIGINT)
 
 	go func() {
 		for {
 			i := <-ticker
-			scraper.PicoScraper()
 			scraper.UpdateBestBuy()
 			if i%6 == 0 {
 				log.Println("Item watcher")
@@ -57,6 +60,10 @@ func main() {
 				log.Println("AWS")
 				awscost.Update()
 			}
+			// Temporary turning off
+			if false {
+				scraper.PicoScraper()
+			}
 		}
 	}()
 
@@ -65,6 +72,9 @@ func main() {
 		case <-tick.C:
 			ticker <- tickerCount
 			tickerCount++
+		case <-terminate:
+			log.Print("\n\nSIGTERM received. Shutting down...\n")
+			return
 		}
 	}
 }
