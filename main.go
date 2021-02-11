@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	tick := time.NewTicker(5 * time.Second)
+	tick := time.NewTicker(10 * time.Second)
 	tickerCount := 0
 	ticker := make(chan int)
 
@@ -22,36 +22,36 @@ func main() {
 			i := <-ticker
 			scraper.PicoScraper()
 			scraper.UpdateBestBuy()
-			if i%12 == 0 {
+			if i%6 == 0 {
 				log.Println("Item watcher")
 				scraper.GetJofogas("raspberry")
 				scraper.GetHvapro("raspberry")
 				scraper.GetJofogas("zigbee")
 				scraper.GetHvapro("zigbee")
 			}
-			if i%60 == 0 {
+			if i%30 == 0 {
 				log.Println("Sg")
 				sg.QueryEntry()
 			}
-			if i%120 == 0 {
+			if i%60 == 0 {
 				log.Println("DHT")
 				dht.ReadDHT(4)
 			}
-			if i%360 == 0 {
+			if i%180 == 0 {
 				log.Println("COVID")
 				scraper.UpdateCovid()
 				log.Println("Bump HVA")
 				bumpha.Update(os.Getenv("HVA_ITEM"), "bontatlan_kitvision_escape_hd5w_1080p_akciokamera_3")
 			}
-			if i%1440 == 0 {
+			if i%720 == 0 {
 				log.Println("Ncore")
 				scraper.UpdateNcore()
 			}
-			if i%2880 == 0 {
+			if i%1440 == 0 {
 				log.Println("Fuel")
 				scraper.UpdateFuelPrice()
 			}
-			if i%8640 == 0 {
+			if i%4320 == 0 {
 				log.Println("Fixer")
 				scraper.UpdateCurrencies()
 				log.Println("AWS")
