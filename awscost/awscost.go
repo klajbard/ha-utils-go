@@ -25,6 +25,7 @@ func Update() {
 	cost := getRecentCost()
 	now := time.Now()
 	if !(now.Sub(cost.Date).Hours() > 96) && cost.Cost != "" {
+		updateHassio(cost.Cost)
 		return
 	}
 	currentMonth := time.Now().Format("2006-01")
