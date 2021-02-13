@@ -38,7 +38,7 @@ func SetState(sensor string, payload interface{}) {
 	fmt.Println(resp.Status)
 }
 
-func ScrapeFirst(url string, query string) string {
+func ScrapeFirst(url, query string) string {
 	resp, err := http.Get(url)
 	if err != nil {
 		PrintError(err)

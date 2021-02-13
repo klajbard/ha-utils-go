@@ -1,3 +1,4 @@
+// Bumps an item on hardverapro
 package bumpha
 
 import (
@@ -22,7 +23,7 @@ import (
 // post request of "felhoz.php", then check the request body
 // *name* - name of the item
 // The easiest way is to simply copy from the URL
-func Update(fid string, name string) {
+func Update(fid, name string) {
 	link := fmt.Sprintf("https://hardverapro.hu/apro/%s/hsz_1-50.html", name)
 
 	resp, err := http.Get(link)
@@ -52,7 +53,7 @@ func Update(fid string, name string) {
 	}
 }
 
-func bumpItem(fid string, pid string) {
+func bumpItem(fid, pid string) {
 	payload := "fidentifier=" + fid
 	link := "https://hardverapro.hu/muvelet/apro/felhoz.php?id=" + pid
 	req, err := http.NewRequest("POST", link, strings.NewReader(payload))

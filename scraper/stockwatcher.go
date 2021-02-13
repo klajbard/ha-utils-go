@@ -40,7 +40,7 @@ func getScraperData(name string) (string, error) {
 	return data.Value, nil
 }
 
-func saveScraperData(name string, value string) error {
+func saveScraperData(name, value string) error {
 	data := ScraperModel{name, value}
 	_, err := config.Scrapers.Upsert(bson.M{"name": name}, &data)
 	return err

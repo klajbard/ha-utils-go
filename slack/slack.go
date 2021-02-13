@@ -16,7 +16,7 @@ import (
 // *group* - The hash for the channel
 // Can be extracted from: 'https://hooks.slack.com/services/*group*'
 // *text* - The sent text formatted with markup
-func NotifySlack(group string, text string) {
+func NotifySlack(group, text string) {
 	channel := os.Getenv(group)
 	if channel == "" {
 		utils.PrintError(errors.New("Unable to get ENV variable"))

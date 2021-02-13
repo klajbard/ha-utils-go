@@ -1,3 +1,4 @@
+// Get current month cost of AWS services
 package awscost
 
 import (

@@ -41,7 +41,7 @@ func QueryEntry() {
 	enterGiveAway(ga_url, xsrf_token)
 }
 
-func enterGiveAway(link string, token string) {
+func enterGiveAway(link, token string) {
 	id := strings.Split(link, "/")[2]
 	payload := url.Values{
 		"xsrf_token": {token},

@@ -1,3 +1,4 @@
+// Gets DHT22 sensor data of Raspberry GPIO
 package dht
 
 import (

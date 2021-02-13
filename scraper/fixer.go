@@ -50,11 +50,11 @@ func UpdateCurrencies() {
 
 	for _, val := range base {
 		rate := rates[target] / rates[val]
-		updateHassioScraper(val, rate, target)
+		updateHassioScraper(val, target, rate)
 	}
 }
 
-func updateHassioScraper(name string, value float64, target string) {
+func updateHassioScraper(name, target string, value float64) {
 	valueString := strconv.FormatFloat(value, 'f', 2, 64)
 	nameLowercase := strings.ToLower(name)
 

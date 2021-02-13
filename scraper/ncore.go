@@ -97,7 +97,7 @@ func getData(sessid string) {
 	})
 }
 
-func updateHassio(name string, value string, sensorName string) {
+func updateHassio(name, value, sensorName string) {
 	sensor := utils.Sensor{
 		State: value,
 		Attributes: utils.Attributes{

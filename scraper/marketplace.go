@@ -41,11 +41,11 @@ func checkWatcherItem(link string) bool {
 	return err == nil
 }
 
-func insertWatcherItem(title string, link string, price string) error {
+func insertWatcherItem(title, link, price string) error {
 	return config.Watcher.Insert(bson.M{"title": title, "price": price, "link": link})
 }
 
-func scrapeItem(url string, itemQuery string, titleQuery string, priceQuery string) {
+func scrapeItem(url, itemQuery, titleQuery, priceQuery string) {
 	resp, err := http.Get(url)
 	if err != nil {
 		utils.PrintError(err)

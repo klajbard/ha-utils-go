@@ -7,7 +7,6 @@ import (
 )
 
 var DB *mgo.Database
-var Consumptions *mgo.Collection
 var Fuels *mgo.Collection
 var Scrapers *mgo.Collection
 var Watcher *mgo.Collection
@@ -26,7 +25,6 @@ func init() {
 	}
 
 	DB = s.DB("hassio")
-	Consumptions = DB.C("consumptions")
 	Scrapers = DB.C("scrapers")
 	Fuels = DB.C("fuels")
 	Watcher = DB.C("watcher")
