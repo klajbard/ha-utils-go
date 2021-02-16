@@ -49,11 +49,13 @@ func scrapeItem(url, itemQuery, titleQuery, priceQuery string) {
 	resp, err := http.Get(url)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	doc.Find(itemQuery).Each(func(_ int, s *goquery.Selection) {

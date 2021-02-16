@@ -51,6 +51,7 @@ func Update() {
 	})
 	if err != nil {
 		log.Fatalf("[AWSCOST] Unable to generate report, %v/n", err)
+		return
 	}
 	currentCost := *result.ResultsByTime[0].Total["BlendedCost"].Amount
 	insertCost(currentCost)
@@ -72,7 +73,7 @@ func getRecentCost() Cost {
 func insertCost(cost string) {
 	err := config.AWS.Insert(bson.M{"cost": cost, "date": time.Now()})
 	if err != nil {
-		log.Println(err)
+		utils.PrintError(err)
 	}
 }
 

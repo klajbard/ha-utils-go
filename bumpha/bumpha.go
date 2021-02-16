@@ -59,6 +59,7 @@ func bumpItem(fid, pid string) {
 	req, err := http.NewRequest("POST", link, strings.NewReader(payload))
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
@@ -69,11 +70,13 @@ func bumpItem(fid, pid string) {
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	log.Println("[BUMPHA] " + string(body))

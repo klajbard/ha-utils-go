@@ -28,11 +28,13 @@ func UpdateBestBuy() {
 	resp, err := http.Get(link)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 	doc.Find(".msg-list:not(.thread-content) .media").Each(func(id int, s *goquery.Selection) {
 		anchorElem := s.Find(".msg-head-author .msg-num a")

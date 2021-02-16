@@ -29,11 +29,13 @@ func UpdateCovid() {
 	resp, err := http.Get("https://koronavirus.gov.hu")
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	infectedPest := getNum(doc.Find("#api-fertozott-pest").Text())

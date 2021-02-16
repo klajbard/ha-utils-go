@@ -19,6 +19,7 @@ func QueryEntry() {
 	req, err := http.NewRequest("GET", "https://www.steamgifts.com", nil)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	req.Header.Set("Referer", "www.steamgifts.com")
@@ -27,12 +28,14 @@ func QueryEntry() {
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 	defer resp.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	ga_url, _ := doc.Find(".page__heading + div .giveaway__heading__name").First().Attr("href")
@@ -51,6 +54,7 @@ func enterGiveAway(link, token string) {
 	req, err := http.NewRequest("POST", "https://www.steamgifts.com/ajax.php", strings.NewReader(payload.Encode()))
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
@@ -61,6 +65,7 @@ func enterGiveAway(link, token string) {
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 	defer resp.Body.Close()
 

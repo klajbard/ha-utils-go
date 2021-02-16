@@ -3,7 +3,6 @@ package dht
 
 import (
 	"fmt"
-	"log"
 
 	"../utils"
 	"github.com/d2r2/go-dht"
@@ -16,7 +15,8 @@ func ReadDHT(pin int) {
 	temp, hum, _, err :=
 		dht.ReadDHTxxWithRetry(dht.DHT22, pin, false, 10)
 	if err != nil {
-		log.Fatal(err)
+		utils.PrintError(err)
+		return
 	}
 	setTemperature(temp)
 	setHumidity(hum)

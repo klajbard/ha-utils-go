@@ -32,16 +32,19 @@ func UpdateCurrencies() {
 	resp, err := http.Get(link)
 	if err != nil {
 		utils.PrintError(err)
+		return
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Println(err)
+		utils.PrintError(err)
+		return
 	}
 
 	err = json.Unmarshal([]byte(string(body)), &out)
 	if err != nil {
-		log.Println(err)
+		utils.PrintError(err)
+		return
 	}
 
 	rates := out.Rates
