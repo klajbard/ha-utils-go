@@ -58,11 +58,10 @@ func main() {
 			if i%432000 == 0 {
 				log.Println("Fixer")
 				scraper.UpdateCurrencies()
-				log.Println("AWS")
-				awscost.Update()
 			}
 			// Temporary turning off
 			if false {
+				awscost.Update()
 				scraper.PicoScraper()
 			}
 		}
