@@ -25,36 +25,36 @@ func main() {
 		for {
 			i := <-ticker
 			scraper.UpdateBestBuy()
-			if i%600 == 0 {
+			if i%6 == 0 {
 				log.Println("Item watcher")
 				scraper.GetJofogas("raspberry")
 				scraper.GetHvapro("raspberry")
 				scraper.GetJofogas("zigbee")
 				scraper.GetHvapro("zigbee")
 			}
-			if i%3 == 0 {
+			if i%30 == 0 {
 				log.Println("Sg")
 				sg.QueryEntry()
 			}
-			if i%6 == 0 {
+			if i%60 == 0 {
 				log.Println("DHT")
 				dht.ReadDHT(4)
 			}
-			if i%18 == 0 {
+			if i%180 == 0 {
 				log.Println("COVID")
 				scraper.UpdateCovid()
 				log.Println("Bump HVA")
 				bumpha.Update(os.Getenv("HVA_ITEM"), "bontatlan_kitvision_escape_hd5w_1080p_akciokamera_3")
 			}
-			if i%72 == 0 {
+			if i%720 == 0 {
 				log.Println("Ncore")
 				scraper.UpdateNcore()
 			}
-			if i%144 == 0 {
+			if i%1440 == 0 {
 				log.Println("Fuel")
 				scraper.UpdateFuelPrice()
 			}
-			if i%432 == 0 {
+			if i%4320 == 0 {
 				log.Println("Fixer")
 				scraper.UpdateCurrencies()
 			}
