@@ -21,7 +21,6 @@ func main() {
 	terminate := make(chan os.Signal)
 	signal.Notify(terminate, syscall.SIGTERM, syscall.SIGINT)
 
-	awscost.Update()
 	go func() {
 		for {
 			i := <-ticker
@@ -33,29 +32,29 @@ func main() {
 				scraper.GetJofogas("zigbee")
 				scraper.GetHvapro("zigbee")
 			}
-			if i%3000 == 0 {
+			if i%3 == 0 {
 				log.Println("Sg")
 				sg.QueryEntry()
 			}
-			if i%6000 == 0 {
+			if i%6 == 0 {
 				log.Println("DHT")
 				dht.ReadDHT(4)
 			}
-			if i%18000 == 0 {
+			if i%18 == 0 {
 				log.Println("COVID")
 				scraper.UpdateCovid()
 				log.Println("Bump HVA")
 				bumpha.Update(os.Getenv("HVA_ITEM"), "bontatlan_kitvision_escape_hd5w_1080p_akciokamera_3")
 			}
-			if i%72000 == 0 {
+			if i%72 == 0 {
 				log.Println("Ncore")
 				scraper.UpdateNcore()
 			}
-			if i%144000 == 0 {
+			if i%144 == 0 {
 				log.Println("Fuel")
 				scraper.UpdateFuelPrice()
 			}
-			if i%432000 == 0 {
+			if i%432 == 0 {
 				log.Println("Fixer")
 				scraper.UpdateCurrencies()
 			}
