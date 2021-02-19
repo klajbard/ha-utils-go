@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -14,6 +15,12 @@ import (
 	"./sg"
 )
 
+func handleException() {
+	if e := recover(); e != nil {
+		fmt.Println("Recovering from the error: ", e)
+	}
+}
+
 func main() {
 	tick := time.NewTicker(10 * time.Second)
 	tickerCount := 1
@@ -22,6 +29,7 @@ func main() {
 	signal.Notify(terminate, syscall.SIGTERM, syscall.SIGINT)
 
 	go func() {
+		defer handleException()
 		for {
 			i := <-ticker
 			scraper.UpdateBestBuy()
