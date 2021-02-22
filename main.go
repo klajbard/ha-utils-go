@@ -41,8 +41,10 @@ func main() {
 				scraper.GetHvapro("zigbee")
 			}
 			if i%30 == 0 {
-				log.Println("Sg")
-				sg.QueryEntry()
+				if os.Getenv("SG_SESSID") != "" {
+					log.Println("Sg")
+					sg.QueryEntry()
+				}
 			}
 			if i%60 == 0 {
 				log.Println("DHT")
@@ -51,20 +53,26 @@ func main() {
 			if i%180 == 0 {
 				log.Println("COVID")
 				scraper.UpdateCovid()
-				log.Println("Bump HVA")
-				bumpha.Update(os.Getenv("HVA_ITEM"), "bontatlan_kitvision_escape_hd5w_1080p_akciokamera_3")
+				if os.Getenv("HVA_ITEM") != "" && os.Getenv("HVA_ID") != "" {
+					log.Println("Bump HVA")
+					bumpha.Update(os.Getenv("HVA_ITEM"), "bontatlan_kitvision_escape_hd5w_1080p_akciokamera_3")
+				}
 			}
 			if i%720 == 0 {
-				log.Println("Ncore")
-				scraper.UpdateNcore()
+				if os.Getenv("NCORE_USERNAME") != "" && os.Getenv("NCORE_PASSWORD") != "" {
+					log.Println("Ncore")
+					scraper.UpdateNcore()
+				}
 			}
 			if i%1440 == 0 {
 				log.Println("Fuel")
 				scraper.UpdateFuelPrice()
 			}
 			if i%4320 == 0 {
-				log.Println("Fixer")
-				scraper.UpdateCurrencies()
+				if os.Getenv("FIXERAPI") != "" {
+					log.Println("Fixer")
+					scraper.UpdateCurrencies()
+				}
 			}
 			// Temporary turning off
 			if false {
