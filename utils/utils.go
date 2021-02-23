@@ -23,6 +23,7 @@ func SetState(sensor string, payload interface{}) {
 	req, err := http.NewRequest("POST", link, strings.NewReader(string(payloadString)))
 	if err != nil {
 		PrintError(err)
+		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")

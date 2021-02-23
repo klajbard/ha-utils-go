@@ -23,7 +23,7 @@ func handleException() {
 
 func main() {
 	tick := time.NewTicker(10 * time.Second)
-	tickerCount := 1
+	tickerCount := 0
 	ticker := make(chan int)
 	terminate := make(chan os.Signal)
 	signal.Notify(terminate, syscall.SIGTERM, syscall.SIGINT)
