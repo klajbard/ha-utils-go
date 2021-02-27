@@ -48,13 +48,13 @@ func insertWatcherItem(title, link, price string) error {
 func scrapeItem(url, itemQuery, titleQuery, priceQuery string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 

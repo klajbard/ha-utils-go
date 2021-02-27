@@ -15,7 +15,7 @@ func ReadDHT(pin int) {
 	temp, hum, _, err :=
 		dht.ReadDHTxxWithRetry(dht.DHT22, pin, false, 10)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 	setTemperature(temp)

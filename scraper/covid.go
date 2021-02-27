@@ -28,13 +28,13 @@ func UpdateCovid() {
 	covid := &Covid{}
 	resp, err := http.Get("https://koronavirus.gov.hu")
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
@@ -51,7 +51,7 @@ func UpdateCovid() {
 
 	recentCovid, err := getLastCovid()
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 	delta := sum(covid) - sum(&recentCovid)
 
@@ -73,7 +73,7 @@ func getNum(input string) int {
 	trimmed := strings.ReplaceAll(input, " ", "")
 	num, err := strconv.Atoi(trimmed)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 
 	return num

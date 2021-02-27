@@ -28,12 +28,12 @@ func Update(fid, name string) {
 
 	resp, err := http.Get(link)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 
 	last_bump := doc.Find("[title=\"Utolsó UP dátuma\"]").Text()
@@ -58,7 +58,7 @@ func bumpItem(fid, pid string) {
 	link := "https://hardverapro.hu/muvelet/apro/felhoz.php?id=" + pid
 	req, err := http.NewRequest("POST", link, strings.NewReader(payload))
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
@@ -69,13 +69,13 @@ func bumpItem(fid, pid string) {
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 

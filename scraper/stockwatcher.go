@@ -25,7 +25,7 @@ func PicoScraper() {
 		slack.NotifySlack("SLACK_PRESENCE", slackNotif)
 		err := saveScraperData("pico", result)
 		if err != nil {
-			utils.PrintError(err)
+			utils.NotifyError(err)
 		}
 	}
 }

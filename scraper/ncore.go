@@ -33,7 +33,7 @@ func UpdateNcore() {
 	jar, _ := cookiejar.New(nil)
 	req, err := http.NewRequest("POST", "https://ncore.pro/login.php", strings.NewReader(login))
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
@@ -52,7 +52,7 @@ func UpdateNcore() {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 	defer resp.Body.Close()
@@ -72,21 +72,21 @@ func getData(sessid string) {
 	result := map[string]string{}
 	req, err := http.NewRequest("POST", "https://ncore.pro/hitnrun.php", nil)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 	req.AddCookie(&http.Cookie{Name: "PHPSESSID", Value: sessid})
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 	defer resp.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 

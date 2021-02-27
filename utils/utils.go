@@ -2,12 +2,13 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 
+	"../slack"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -17,12 +18,12 @@ func SetState(sensor string, payload interface{}) {
 
 	payloadString, err := json.Marshal(payload)
 	if err != nil {
-		PrintError(err)
+		NotifyError(err)
 	}
 
 	req, err := http.NewRequest("POST", link, strings.NewReader(string(payloadString)))
 	if err != nil {
-		PrintError(err)
+		NotifyError(err)
 		return
 	}
 
@@ -32,27 +33,32 @@ func SetState(sensor string, payload interface{}) {
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		PrintError(err)
+		NotifyError(err)
 	}
 	defer resp.Body.Close()
 
-	fmt.Println(resp.Status)
+	log.Println(resp.Status)
 }
 
 func ScrapeFirst(url, query string) string {
 	resp, err := http.Get(url)
 	if err != nil {
-		PrintError(err)
+		NotifyError(err)
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		PrintError(err)
+		NotifyError(err)
 	}
 
 	return doc.Find(query).First().Text()
 }
 
+func NotifyError(err error) {
+	slack.NotifySlack("SLACK_HASS", err.Error())
+	PrintError(err)
+}
+
 func PrintError(err error) {
-	fmt.Printf("[**Error**] %s", err)
+	log.Printf("[**Error**] %s", err)
 }

@@ -27,13 +27,13 @@ func UpdateBestBuy() {
 	link := "https://prohardver.hu/tema/bestbuy_topik_akcio_ajanlasakor_akcio_hashtag_kote/friss.html"
 	resp, err := http.Get(link)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 	doc.Find(".msg-list:not(.thread-content) .media").Each(func(id int, s *goquery.Selection) {
@@ -59,7 +59,7 @@ func UpdateBestBuy() {
 func findBestBuy(anchor string) (bb BestBuy) {
 	err := config.BestBuy.Find(bson.M{"anchor": anchor}).One(&bb)
 	if err != nil && err.Error() != "not found" {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 	return
 }
@@ -67,6 +67,6 @@ func findBestBuy(anchor string) (bb BestBuy) {
 func insertBestBuy(bb BestBuy) {
 	err := config.BestBuy.Insert(bb)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 }

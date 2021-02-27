@@ -18,7 +18,7 @@ import (
 func QueryEntry() {
 	req, err := http.NewRequest("GET", "https://www.steamgifts.com", nil)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
@@ -27,14 +27,14 @@ func QueryEntry() {
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 	defer resp.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
@@ -53,7 +53,7 @@ func enterGiveAway(link, token string) {
 	}
 	req, err := http.NewRequest("POST", "https://www.steamgifts.com/ajax.php", strings.NewReader(payload.Encode()))
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 
@@ -64,14 +64,14 @@ func enterGiveAway(link, token string) {
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 		return
 	}
 	defer resp.Body.Close()
 
 	ret, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 	fmt.Println(string(ret))
 }

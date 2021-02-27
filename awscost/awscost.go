@@ -36,7 +36,7 @@ func Update() {
 	)
 	svc := costexplorer.New(sess)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 
 	result, err := svc.GetCostAndUsage(&costexplorer.GetCostAndUsageInput{
@@ -64,7 +64,7 @@ func getRecentCost() Cost {
 	cost := Cost{}
 	err := config.AWS.Find(nil).Sort("-date").Limit(1).One(&cost)
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 
 	return cost
@@ -73,7 +73,7 @@ func getRecentCost() Cost {
 func insertCost(cost string) {
 	err := config.AWS.Insert(bson.M{"cost": cost, "date": time.Now()})
 	if err != nil {
-		utils.PrintError(err)
+		utils.NotifyError(err)
 	}
 }
 
