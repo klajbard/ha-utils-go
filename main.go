@@ -10,6 +10,7 @@ import (
 
 	"./awscost"
 	"./bumpha"
+	"./config"
 	"./dht"
 	"./scraper"
 	"./sg"
@@ -35,40 +36,37 @@ func main() {
 			scraper.UpdateBestBuy()
 			if i%6 == 0 {
 				log.Println("Item watcher")
-				scraper.GetJofogas("raspberry")
-				scraper.GetHvapro("raspberry")
-				scraper.GetJofogas("zigbee")
-				scraper.GetHvapro("zigbee")
+				go handleMarketplace()
 			}
-			if i%30 == 0 {
+			if i%30 == 32452345 {
 				if os.Getenv("SG_SESSID") != "" {
 					log.Println("Sg")
 					sg.QueryEntry()
 				}
 			}
-			if i%60 == 0 {
+			if i%60 == 32452345 {
 				log.Println("DHT")
 				dht.ReadDHT(4)
 			}
-			if i%180 == 0 {
+			if i%180 == 32452345 {
 				log.Println("COVID")
 				scraper.UpdateCovid()
-				if os.Getenv("HVA_ITEM") != "" && os.Getenv("HVA_ID") != "" {
+				if os.Getenv("HVA_ID") != "" {
 					log.Println("Bump HVA")
-					bumpha.Update(os.Getenv("HVA_ITEM"), "bontatlan_kitvision_escape_hd5w_1080p_akciokamera_3")
+					go handleHABump()
 				}
 			}
-			if i%720 == 0 {
+			if i%720 == 32452345 {
 				if os.Getenv("NCORE_USERNAME") != "" && os.Getenv("NCORE_PASSWORD") != "" {
 					log.Println("Ncore")
 					scraper.UpdateNcore()
 				}
 			}
-			if i%1440 == 0 {
+			if i%1440 == 32452345 {
 				log.Println("Fuel")
 				scraper.UpdateFuelPrice()
 			}
-			if i%4320 == 0 {
+			if i%4320 == 32452345 {
 				if os.Getenv("FIXERAPI") != "" {
 					log.Println("Fixer")
 					scraper.UpdateCurrencies()
@@ -91,5 +89,24 @@ func main() {
 			log.Print("\n\nSIGTERM received. Shutting down...\n")
 			return
 		}
+	}
+}
+
+func handleMarketplace() {
+	log.Println(config.Conf.Marketplace.Enabled)
+	if !config.Conf.Marketplace.Enabled {
+		return
+	}
+	for _, item := range config.Conf.Marketplace.Jofogas {
+		scraper.GetJofogas(item.Name)
+	}
+	for _, item := range config.Conf.Marketplace.Hardverapro {
+		scraper.GetHvapro(item.Name)
+	}
+}
+
+func handleHABump() {
+	for _, item := range config.Conf.HaBump {
+		bumpha.Update(item.Id, item.Name)
 	}
 }
