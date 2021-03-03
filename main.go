@@ -38,17 +38,17 @@ func main() {
 				log.Println("Item watcher")
 				go handleMarketplace()
 			}
-			if i%30 == 32452345 {
+			if i%30 == 0 {
 				if os.Getenv("SG_SESSID") != "" {
 					log.Println("Sg")
 					sg.QueryEntry()
 				}
 			}
-			if i%60 == 32452345 {
+			if i%60 == 0 {
 				log.Println("DHT")
 				dht.ReadDHT(4)
 			}
-			if i%180 == 32452345 {
+			if i%180 == 0 {
 				log.Println("COVID")
 				scraper.UpdateCovid()
 				if os.Getenv("HVA_ID") != "" {
@@ -56,25 +56,25 @@ func main() {
 					go handleHABump()
 				}
 			}
-			if i%720 == 32452345 {
+			if i%720 == 0 {
 				if os.Getenv("NCORE_USERNAME") != "" && os.Getenv("NCORE_PASSWORD") != "" {
 					log.Println("Ncore")
 					scraper.UpdateNcore()
 				}
 			}
-			if i%1440 == 32452345 {
+			if i%1440 == 0 {
 				log.Println("Fuel")
 				scraper.UpdateFuelPrice()
 			}
-			if i%4320 == 32452345 {
+			if i%4320 == 0 {
 				if os.Getenv("FIXERAPI") != "" {
 					log.Println("Fixer")
 					scraper.UpdateCurrencies()
 				}
+				awscost.Update()
 			}
 			// Temporary turning off
 			if false {
-				awscost.Update()
 				scraper.PicoScraper()
 			}
 		}
