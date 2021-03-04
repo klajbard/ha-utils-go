@@ -59,7 +59,7 @@ func UpdateCovid() {
 
 	if !(reflect.DeepEqual(&recentCovid, covid)) {
 		result := fmt.Sprintf("*COVID*\n:biohazard_sign: *%d*\n:skull: *%d*\n:heartpulse: *%d*\n:chart_with_upwards_trend: *%d*", covid.Infected, covid.Dead, covid.Cured, delta)
-		slack.NotifySlack("SLACK_PRESENCE", result)
+		slack.NotifySlack("general", result, ":female-doctor:")
 		log.Println("[COVID] Updated! New cases " + string(delta))
 		insertCovid(covid)
 	}

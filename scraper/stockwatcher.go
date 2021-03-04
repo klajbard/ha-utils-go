@@ -22,7 +22,7 @@ func PicoScraper() {
 	recentResult, err := getScraperData("pico")
 	if (err != nil) || recentResult != result {
 		slackNotif := fmt.Sprintf("<%s|Raspberry Pico>: %s", url, result)
-		slack.NotifySlack("SLACK_PRESENCE", slackNotif)
+		slack.NotifySlack("general", slackNotif, ":package:")
 		err := saveScraperData("pico", result)
 		if err != nil {
 			utils.NotifyError(err)

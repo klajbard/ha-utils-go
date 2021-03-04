@@ -11,6 +11,7 @@ import (
 type Configuration struct {
 	Marketplace MarketplaceConfig `yaml:"marketplace"`
 	HaBump      []HaBumpConfig    `yaml:"habump"`
+	Channels    []SlackChannel    `yaml:"channels"`
 }
 
 type MarketplaceConfig struct {
@@ -26,6 +27,11 @@ type HaBumpConfig struct {
 
 type MarketplaceName struct {
 	Name string `yaml:"name"`
+}
+
+type SlackChannel struct {
+	Name string `yaml:"name"`
+	Id   string `yaml:"id"`
 }
 
 func (c *Configuration) GetConf() *Configuration {
@@ -45,6 +51,11 @@ func (c *Configuration) GetConf() *Configuration {
 
 var Conf Configuration
 
+var Channels = map[string]string{}
+
 func init() {
 	Conf.GetConf()
+	for _, channel := range Conf.Channels {
+		Channels[channel.Name] = channel.Id
+	}
 }

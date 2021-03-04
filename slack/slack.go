@@ -1,42 +1,23 @@
 package slack
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"log"
-	"net/http"
-	"os"
+
+	"../config"
+	"github.com/slack-go/slack"
 )
 
 // Slack notification uses hooks to send messages
 // *group* - The hash for the channel
 // Can be extracted from: 'https://hooks.slack.com/services/*group*'
 // *text* - The sent text formatted with markup
-func NotifySlack(group, text string) {
-	channel := os.Getenv(group)
-	if channel == "" {
+func NotifySlack(channel, text, emoji string) {
+	if channel == "" || config.Channels[channel] == "" {
 		log.Println(errors.New("Unable to get ENV variable"))
 	}
-	reqBody, err := json.Marshal(map[string]string{
-		"text": text,
-	})
+	_, _, err := config.SlackBot.PostMessage(channel, slack.MsgOptionText(text, false), slack.MsgOptionIconEmoji(emoji))
 	if err != nil {
-		log.Println(err)
+		log.Printf("Posting message failed: %v", err)
 	}
-
-	resp, err := http.Post("https://hooks.slack.com/services/"+channel,
-		"application/json", bytes.NewBuffer(reqBody))
-	if err != nil {
-		log.Println(err)
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Println(err)
-	}
-
-	log.Println(string(body))
 }

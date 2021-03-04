@@ -49,7 +49,7 @@ func UpdateBestBuy() {
 			if anchor != foundBB.Anchor {
 				log.Println("[BESTBUY] New post")
 				notif := fmt.Sprintf("<https://prohardver.hu%s|#akcio> *%s* \n%s", url, anchor, msg)
-				slack.NotifySlack("SLACK_BESTBUY", notif)
+				slack.NotifySlack("bestbuy", notif, ":money_with_wings:")
 				insertBestBuy(BestBuy{anchor, msg, url})
 			}
 		}

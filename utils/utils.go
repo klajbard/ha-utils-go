@@ -55,7 +55,7 @@ func ScrapeFirst(url, query string) string {
 }
 
 func NotifyError(err error) {
-	slack.NotifySlack("SLACK_HASS", err.Error())
+	slack.NotifySlack("hass", err.Error(), ":exclamation:")
 	PrintError(err)
 }
 

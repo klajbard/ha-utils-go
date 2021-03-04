@@ -20,7 +20,7 @@ func UpdateFuelPrice() {
 	result := utils.ScrapeFirst("https://holtankoljak.hu/uzemanyag_arvaltozasok#tartalom", "#Holtankoljak_cikk_leaderboard_top_1 ~ .row .container a")
 	recentResult := getRecentFuelPrice()
 	if recentResult != result {
-		slack.NotifySlack("SLACK_SCRAPER", result)
+		slack.NotifySlack("fuel", result, ":fuelpump:")
 		log.Println("[FUEL] New post with price updates is available.")
 		err := saveFuelPrice(result)
 		if err != nil {
