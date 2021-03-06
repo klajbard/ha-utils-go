@@ -30,7 +30,7 @@ func GetJofogas(item string) {
 // Queries Hardverapro for a specific 'item' and
 // sends message to Slack if theres new item
 func GetHvapro(item string) {
-	url := fmt.Sprintf("https://hardverapro.hu/aprok/keres.php?stext=%s", item)
+	url := fmt.Sprintf("https://hardverapro.hu/aprok/%s", item)
 
 	scrapeItem(url, ".media", ".uad-title a", ".uad-price")
 }
