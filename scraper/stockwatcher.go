@@ -14,16 +14,15 @@ type ScraperModel struct {
 	Value string // `json:"value" bson:"value"`
 }
 
-// Queries for RPI Pico availability
+// Queries for an item availability
 // Sends Slack message if it is in stock
-func PicoScraper() {
-	url := "https://www.optimusdigital.ro/en/raspberry-pi-boards/12024-raspberry-pi-pico-728886755172.html"
-	result := utils.ScrapeFirst(url, "#quantityAvailable")
-	recentResult, err := getScraperData("pico")
+func StockWatcher(item *config.ItemStock) {
+	result := utils.ScrapeFirst(item.Url, item.Query)
+	recentResult, err := getScraperData(item.Name)
 	if (err != nil) || recentResult != result {
-		slackNotif := fmt.Sprintf("<%s|Raspberry Pico>: %s", url, result)
+		slackNotif := fmt.Sprintf("<%s|%s>: %s", item.Url, item.Name, result)
 		slack.NotifySlack("general", slackNotif, ":package:")
-		err := saveScraperData("pico", result)
+		err := saveScraperData(item.Name, result)
 		if err != nil {
 			utils.NotifyError(err)
 		}

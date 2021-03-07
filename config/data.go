@@ -9,9 +9,10 @@ import (
 )
 
 type Configuration struct {
-	Marketplace MarketplaceConfig `yaml:"marketplace"`
-	HaBump      []HaBumpConfig    `yaml:"habump"`
-	Channels    []SlackChannel    `yaml:"channels"`
+	Marketplace  MarketplaceConfig `yaml:"marketplace"`
+	HaBump       []HaBumpConfig    `yaml:"habump"`
+	Channels     []SlackChannel    `yaml:"channels"`
+	StockWatcher []ItemStock       `yaml:"stockwatcher"`
 }
 
 type MarketplaceConfig struct {
@@ -37,6 +38,12 @@ type MarketplaceName struct {
 type SlackChannel struct {
 	Name string `yaml:"name"`
 	Id   string `yaml:"id"`
+}
+
+type ItemStock struct {
+	Name  string `yaml:"name"`
+	Url   string `yaml:"url"`
+	Query string `yaml:"query"`
 }
 
 func (c *Configuration) GetConf() *Configuration {
