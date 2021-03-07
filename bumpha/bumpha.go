@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -23,7 +22,7 @@ import (
 // post request of "felhoz.php", then check the request body
 // *name* - name of the item
 // The easiest way is to simply copy from the URL
-func Update(fid, name string) {
+func Update(hva_id, fid, name string) {
 	link := fmt.Sprintf("https://hardverapro.hu/apro/%s/hsz_1-50.html", name)
 
 	resp, err := http.Get(link)
@@ -43,17 +42,17 @@ func Update(fid, name string) {
 	pid := strings.Split(re.FindString(pid_link), "=")[1]
 
 	if strings.Contains(last_bump, "napja") {
-		bumpItem(fid, pid)
+		bumpItem(hva_id, fid, pid)
 	} else if strings.Contains(last_bump, "órája") {
 		re := regexp.MustCompile(`\d`)
 		hours_ago, _ := strconv.Atoi(re.FindString(last_bump))
 		if hours_ago > 2 {
-			bumpItem(fid, pid)
+			bumpItem(hva_id, fid, pid)
 		}
 	}
 }
 
-func bumpItem(fid, pid string) {
+func bumpItem(hva_id, fid, pid string) {
 	payload := "fidentifier=" + fid
 	link := "https://hardverapro.hu/muvelet/apro/felhoz.php?id=" + pid
 	req, err := http.NewRequest("POST", link, strings.NewReader(payload))
@@ -65,7 +64,7 @@ func bumpItem(fid, pid string) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
 	req.Header.Set("Accept", "application/json, text/javascript, */*; q=0.01")
 	req.Header.Set("Content-Length", strconv.Itoa(len(payload)))
-	req.AddCookie(&http.Cookie{Name: "identifier", Value: os.Getenv("HVA_ID")})
+	req.AddCookie(&http.Cookie{Name: "identifier", Value: hva_id})
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {

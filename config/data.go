@@ -21,6 +21,11 @@ type MarketplaceConfig struct {
 }
 
 type HaBumpConfig struct {
+	Identifier string   `yaml:"identifier"`
+	Items      []HaItem `yaml:"items"`
+}
+
+type HaItem struct {
 	Name string `yaml:"name"`
 	Id   string `yaml:"id"`
 }

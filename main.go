@@ -51,10 +51,8 @@ func main() {
 			if i%180 == 0 {
 				log.Println("COVID")
 				scraper.UpdateCovid()
-				if os.Getenv("HVA_ID") != "" {
-					log.Println("Bump HVA")
-					go handleHABump()
-				}
+				log.Println("Bump HVA")
+				go handleHABump()
 			}
 			if i%720 == 0 {
 				if os.Getenv("NCORE_USERNAME") != "" && os.Getenv("NCORE_PASSWORD") != "" {
@@ -106,7 +104,9 @@ func handleMarketplace() {
 }
 
 func handleHABump() {
-	for _, item := range config.Conf.HaBump {
-		bumpha.Update(item.Id, item.Name)
+	for _, user := range config.Conf.HaBump {
+		for _, item := range user.Items {
+			bumpha.Update(user.Identifier, item.Id, item.Name)
+		}
 	}
 }
