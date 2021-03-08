@@ -23,8 +23,8 @@ func handleException() {
 }
 
 func main() {
-	tick := time.NewTicker(10 * time.Second)
-	tickerCount := 1
+	tick := time.NewTicker(3 * time.Second)
+	tickerCount := 0
 	ticker := make(chan int)
 	terminate := make(chan os.Signal)
 	signal.Notify(terminate, syscall.SIGTERM, syscall.SIGINT)
@@ -48,6 +48,8 @@ func main() {
 			if i%60 == 0 {
 				log.Println("DHT")
 				go dht.ReadDHT(4)
+				log.Println("Arukereso")
+				go queryArukereso()
 			}
 			if i%180 == 0 {
 				log.Println("COVID")
@@ -110,5 +112,11 @@ func handleHABump() {
 func stockWatcher() {
 	for _, item := range config.Conf.StockWatcher {
 		scraper.StockWatcher(&item)
+	}
+}
+
+func queryArukereso() {
+	for _, item := range config.Conf.Arukereso {
+		scraper.QueryArukereso(item.Url)
 	}
 }

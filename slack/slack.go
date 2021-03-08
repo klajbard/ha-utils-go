@@ -9,9 +9,9 @@ import (
 )
 
 // Slack notification uses hooks to send messages
-// *group* - The hash for the channel
-// Can be extracted from: 'https://hooks.slack.com/services/*group*'
+// *channel* - Channel id
 // *text* - The sent text formatted with markup
+// *emoji* - Emoji to send the message as
 func NotifySlack(channel, text, emoji string) {
 	if channel == "" || config.Channels[channel] == "" {
 		log.Println(errors.New("Unable to get ENV variable"))

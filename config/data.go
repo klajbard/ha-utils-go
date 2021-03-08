@@ -13,6 +13,11 @@ type Configuration struct {
 	HaBump       []HaBumpConfig    `yaml:"habump"`
 	Channels     []SlackChannel    `yaml:"channels"`
 	StockWatcher []ItemStock       `yaml:"stockwatcher"`
+	Arukereso    []Url             `yaml:"arukereso"`
+}
+
+type Url struct {
+	Url string `yaml:"url"`
 }
 
 type MarketplaceConfig struct {
