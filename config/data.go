@@ -15,6 +15,7 @@ type Configuration struct {
 	StockWatcher []ItemStock       `yaml:"stockwatcher"`
 	Arukereso    []Url             `yaml:"arukereso"`
 	Enable       EnableConfig      `yaml:"enable"`
+	Silence      bool              `yaml:"silence"`
 }
 
 type Url struct {

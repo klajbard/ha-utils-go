@@ -13,6 +13,9 @@ import (
 // *text* - The sent text formatted with markup
 // *emoji* - Emoji to send the message as
 func NotifySlack(channel, text, emoji string) {
+	if config.Conf.Silence {
+		return
+	}
 	if channel == "" || config.Channels[channel] == "" {
 		log.Println(errors.New("Unable to get ENV variable"))
 	}
