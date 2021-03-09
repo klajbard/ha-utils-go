@@ -33,46 +33,31 @@ func main() {
 		defer handleException()
 		for {
 			i := <-ticker
-			go scraper.UpdateBestBuy()
+			go handleUpdateBB()
 			go stockWatcher()
 			if i%6 == 0 {
-				log.Println("Item watcher")
 				go handleMarketplace()
 			}
 			if i%30 == 0 {
-				if os.Getenv("SG_SESSID") != "" {
-					log.Println("Sg")
-					go sg.QueryEntry()
-				}
+				go handleSG()
 			}
 			if i%60 == 0 {
-				log.Println("DHT")
-				go dht.ReadDHT(4)
-				log.Println("Arukereso")
+				go handleUpdateDHT()
 				go queryArukereso()
 			}
 			if i%180 == 0 {
-				log.Println("COVID")
-				scraper.UpdateCovid()
-				log.Println("Bump HVA")
+				go handleUpdateCovid()
 				go handleHABump()
 			}
 			if i%720 == 0 {
-				if os.Getenv("NCORE_USERNAME") != "" && os.Getenv("NCORE_PASSWORD") != "" {
-					log.Println("Ncore")
-					go scraper.UpdateNcore()
-				}
+				go handleUpdateNcore()
 			}
 			if i%1440 == 0 {
-				log.Println("Fuel")
-				go scraper.UpdateFuelPrice()
+				go handleUpdateFuel()
 			}
 			if i%4320 == 0 {
-				if os.Getenv("FIXERAPI") != "" {
-					log.Println("Fixer")
-					go scraper.UpdateCurrencies()
-				}
-				go awscost.Update()
+				go handleUpdateFixer()
+				go handleAwsCost()
 			}
 		}
 	}()
@@ -90,9 +75,10 @@ func main() {
 }
 
 func handleMarketplace() {
-	if !config.Conf.Marketplace.Enabled {
+	if !config.Conf.Enable.Marketplace {
 		return
 	}
+	log.Println("Item watcher")
 	for _, item := range config.Conf.Marketplace.Jofogas {
 		scraper.GetJofogas(item.Name)
 	}
@@ -102,6 +88,10 @@ func handleMarketplace() {
 }
 
 func handleHABump() {
+	if !config.Conf.Enable.Bumphva {
+		return
+	}
+	log.Println("Bump HVA")
 	for _, user := range config.Conf.HaBump {
 		for _, item := range user.Items {
 			bumpha.Update(user.Identifier, item.Id, item.Name)
@@ -110,13 +100,86 @@ func handleHABump() {
 }
 
 func stockWatcher() {
+	if !config.Conf.Enable.Stockwatcher {
+		return
+	}
+	log.Println("Stock watcher")
 	for _, item := range config.Conf.StockWatcher {
 		scraper.StockWatcher(&item)
 	}
 }
 
 func queryArukereso() {
+	if !config.Conf.Enable.Arukereso {
+		return
+	}
+	log.Println("Arukereso")
 	for _, item := range config.Conf.Arukereso {
 		scraper.QueryArukereso(item.Url)
 	}
+}
+
+func handleUpdateBB() {
+	if !config.Conf.Enable.Bestbuy {
+		return
+	}
+	log.Println("Bump HVA")
+	scraper.UpdateBestBuy()
+}
+
+func handleSG() {
+	if !config.Conf.Enable.Steamgifts || os.Getenv("SG_SESSID") == "" {
+		return
+	}
+	log.Println("Sg")
+	sg.QueryEntry()
+}
+
+func handleUpdateCovid() {
+	if !config.Conf.Enable.Covid {
+		return
+	}
+	log.Println("COVID")
+	scraper.UpdateCovid()
+}
+
+func handleUpdateDHT() {
+	if !config.Conf.Enable.Dht {
+		return
+	}
+	log.Println("DHT")
+	dht.ReadDHT(4)
+}
+
+func handleUpdateNcore() {
+	if !config.Conf.Enable.Ncore || os.Getenv("NCORE_USERNAME") == "" || os.Getenv("NCORE_PASSWORD") == "" {
+		return
+	}
+	log.Println("Ncore")
+	scraper.UpdateNcore()
+}
+
+func handleUpdateFuel() {
+	if !config.Conf.Enable.Fuel {
+		return
+	}
+	log.Println("Fuel")
+	sg.QueryEntry()
+	scraper.UpdateFuelPrice()
+}
+
+func handleUpdateFixer() {
+	if !config.Conf.Enable.Fixerio || os.Getenv("FIXERAPI") == "" {
+		return
+	}
+	log.Println("Fixer")
+	scraper.UpdateCurrencies()
+}
+
+func handleAwsCost() {
+	if !config.Conf.Enable.Awscost {
+		return
+	}
+	log.Println("AWS Cost")
+	awscost.Update()
 }

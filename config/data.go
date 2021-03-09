@@ -14,6 +14,7 @@ type Configuration struct {
 	Channels     []SlackChannel    `yaml:"channels"`
 	StockWatcher []ItemStock       `yaml:"stockwatcher"`
 	Arukereso    []Url             `yaml:"arukereso"`
+	Enable       EnableConfig      `yaml:"enable"`
 }
 
 type Url struct {
@@ -21,7 +22,6 @@ type Url struct {
 }
 
 type MarketplaceConfig struct {
-	Enabled     bool              `yaml:"enabled"`
 	Jofogas     []MarketplaceName `yaml:"jofogas"`
 	Hardverapro []MarketplaceName `yaml:"hardverapro"`
 }
@@ -49,6 +49,21 @@ type ItemStock struct {
 	Name  string `yaml:"name"`
 	Url   string `yaml:"url"`
 	Query string `yaml:"query"`
+}
+
+type EnableConfig struct {
+	Bestbuy      bool `yaml:"bestbuy"`
+	Stockwatcher bool `yaml:"stockwatcher"`
+	Marketplace  bool `yaml:"marketplace"`
+	Steamgifts   bool `yaml:"steamgifts"`
+	Dht          bool `yaml:"dht"`
+	Arukereso    bool `yaml:"arukereso"`
+	Covid        bool `yaml:"covid"`
+	Bumphva      bool `yaml:"bumphva"`
+	Ncore        bool `yaml:"ncore"`
+	Fuel         bool `yaml:"fuel"`
+	Fixerio      bool `yaml:"fixerio"`
+	Awscost      bool `yaml:"awscost"`
 }
 
 func (c *Configuration) GetConf() *Configuration {

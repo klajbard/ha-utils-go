@@ -18,7 +18,6 @@ Example config
 
 ```yaml
 marketplace:
-  enabled: true
   jofogas: 
     - name: "ikea+tradfri"
   hardverapro:
@@ -35,4 +34,17 @@ channels:
     id: "C01MV9VRUCC"
   - name: "channel2"
     id: "C016R5Q1YTW"
+enable:
+  bestbuy: false
+  stockwatcher: false
+  marketplace: false
+  steamgifts: false
+  dht: false
+  arukereso: false
+  covid: false
+  bumphva: false
+  ncore: false
+  fuel: false
+  fixerio: false
+  awscost: false
 ```
