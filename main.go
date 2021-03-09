@@ -23,7 +23,7 @@ func handleException() {
 }
 
 func main() {
-	tick := time.NewTicker(3 * time.Second)
+	tick := time.NewTicker(10 * time.Second)
 	tickerCount := 0
 	ticker := make(chan int)
 	terminate := make(chan os.Signal)
@@ -38,10 +38,8 @@ func main() {
 			if i%6 == 0 {
 				go handleMarketplace()
 			}
-			if i%30 == 0 {
-				go handleSG()
-			}
 			if i%60 == 0 {
+				go handleSG()
 				go handleUpdateDHT()
 				go queryArukereso()
 			}
