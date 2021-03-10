@@ -33,30 +33,30 @@ func main() {
 		defer handleException()
 		for {
 			i := <-ticker
-			go handleUpdateBB()
-			go stockWatcher()
+			handleUpdateBB()
+			stockWatcher()
 			if i%6 == 0 {
-				go handleMarketplace()
+				handleMarketplace()
 			}
 			if i%60 == 0 {
-				go handleSG()
-				go handleUpdateDHT()
-				go queryArukereso()
-				go handleBTC()
+				handleSG()
+				handleUpdateDHT()
+				queryArukereso()
+				handleBTC()
 			}
 			if i%180 == 0 {
-				go handleUpdateCovid()
-				go handleHABump()
+				handleUpdateCovid()
+				handleHABump()
 			}
 			if i%720 == 0 {
-				go handleUpdateNcore()
+				handleUpdateNcore()
 			}
 			if i%1440 == 0 {
-				go handleUpdateFuel()
+				handleUpdateFuel()
 			}
 			if i%4320 == 0 {
-				go handleUpdateFixer()
-				go handleAwsCost()
+				handleUpdateFixer()
+				handleAwsCost()
 			}
 		}
 	}()
