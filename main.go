@@ -77,7 +77,6 @@ func handleMarketplace() {
 	if !config.Conf.Enable.Marketplace {
 		return
 	}
-	log.Println("Item watcher")
 	for _, item := range config.Conf.Marketplace.Jofogas {
 		scraper.GetJofogas(item.Name)
 	}
@@ -122,7 +121,6 @@ func handleUpdateBB() {
 	if !config.Conf.Enable.Bestbuy {
 		return
 	}
-	log.Println("Bump HVA")
 	scraper.UpdateBestBuy()
 }
 
