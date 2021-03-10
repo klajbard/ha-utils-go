@@ -42,6 +42,7 @@ func main() {
 				go handleSG()
 				go handleUpdateDHT()
 				go queryArukereso()
+				go handleBTC()
 			}
 			if i%180 == 0 {
 				go handleUpdateCovid()
@@ -180,4 +181,12 @@ func handleAwsCost() {
 	}
 	log.Println("AWS Cost")
 	awscost.Update()
+}
+
+func handleBTC() {
+	if !config.Conf.Enable.Btc || os.Getenv("BTC_API") == "" {
+		return
+	}
+	log.Println("BTC")
+	scraper.UpdateBTC()
 }

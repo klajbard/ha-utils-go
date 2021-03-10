@@ -65,6 +65,7 @@ type EnableConfig struct {
 	Fuel         bool `yaml:"fuel"`
 	Fixerio      bool `yaml:"fixerio"`
 	Awscost      bool `yaml:"awscost"`
+	Btc          bool `yaml:"btc"`
 }
 
 func (c *Configuration) GetConf() *Configuration {
