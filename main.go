@@ -101,7 +101,6 @@ func stockWatcher() {
 	if !config.Conf.Enable.Stockwatcher {
 		return
 	}
-	log.Println("Stock watcher")
 	for _, item := range config.Conf.StockWatcher {
 		scraper.StockWatcher(&item)
 	}
