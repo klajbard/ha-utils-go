@@ -9,7 +9,9 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
+	"../config"
 	"../utils"
 	"github.com/PuerkitoBio/goquery"
 )
@@ -22,8 +24,11 @@ import (
 // post request of "felhoz.php", then check the request body
 // *name* - name of the item
 // The easiest way is to simply copy from the URL
-func Update(hva_id, fid, name string) {
-	link := fmt.Sprintf("https://hardverapro.hu/apro/%s/hsz_1-50.html", name)
+func Update(hva_id string, item config.HaItem) {
+	if !shouldBump(item.Start) {
+		return
+	}
+	link := fmt.Sprintf("https://hardverapro.hu/apro/%s/hsz_1-50.html", item.Name)
 
 	resp, err := http.Get(link)
 	if err != nil {
@@ -41,14 +46,8 @@ func Update(hva_id, fid, name string) {
 	re := regexp.MustCompile(`uadid=\d+`)
 	pid := strings.Split(re.FindString(pid_link), "=")[1]
 
-	if strings.Contains(last_bump, "napja") {
-		bumpItem(hva_id, fid, pid)
-	} else if strings.Contains(last_bump, "órája") {
-		re := regexp.MustCompile(`\d`)
-		hours_ago, _ := strconv.Atoi(re.FindString(last_bump))
-		if hours_ago > 2 {
-			bumpItem(hva_id, fid, pid)
-		}
+	if strings.Contains(last_bump, "napja") || lastBumpHours(last_bump) >= item.Hour {
+		bumpItem(hva_id, item.Id, pid)
 	}
 }
 
@@ -79,4 +78,18 @@ func bumpItem(hva_id, fid, pid string) {
 	}
 
 	log.Println("[BUMPHA] " + string(body))
+}
+
+func shouldBump(start int) bool {
+	now := time.Now().Hour()
+	return now >= start
+}
+
+func lastBumpHours(last_bump string) int {
+	if strings.Contains(last_bump, "órája") {
+		re := regexp.MustCompile(`\d`)
+		hours_ago, _ := strconv.Atoi(re.FindString(last_bump))
+		return hours_ago
+	}
+	return 0
 }

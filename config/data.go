@@ -33,8 +33,10 @@ type HaBumpConfig struct {
 }
 
 type HaItem struct {
-	Name string `yaml:"name"`
-	Id   string `yaml:"id"`
+	Name  string `yaml:"name"`
+	Id    string `yaml:"id"`
+	Hour  int    `yaml:"hour"`
+	Start int    `yaml:"start"`
 }
 
 type MarketplaceName struct {

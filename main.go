@@ -92,7 +92,7 @@ func handleHABump() {
 	log.Println("Bump HVA")
 	for _, user := range config.Conf.HaBump {
 		for _, item := range user.Items {
-			bumpha.Update(user.Identifier, item.Id, item.Name)
+			bumpha.Update(user.Identifier, item)
 		}
 	}
 }
