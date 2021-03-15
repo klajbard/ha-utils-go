@@ -14,6 +14,7 @@ type Configuration struct {
 	Channels     []SlackChannel    `yaml:"channels"`
 	StockWatcher []ItemStock       `yaml:"stockwatcher"`
 	Arukereso    []Url             `yaml:"arukereso"`
+	Dht          DhtConfig         `yaml:"dht"`
 	Enable       EnableConfig      `yaml:"enable"`
 	Silence      bool              `yaml:"silence"`
 }
@@ -30,6 +31,10 @@ type MarketplaceConfig struct {
 type HaBumpConfig struct {
 	Identifier string   `yaml:"identifier"`
 	Items      []HaItem `yaml:"items"`
+}
+
+type DhtConfig struct {
+	Pin int `yaml:"pin"`
 }
 
 type HaItem struct {

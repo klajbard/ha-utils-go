@@ -144,7 +144,7 @@ func handleUpdateDHT() {
 		return
 	}
 	log.Println("DHT")
-	dht.ReadDHT(4)
+	dht.ReadDHT(config.Conf.Dht.Pin)
 }
 
 func handleUpdateNcore() {
