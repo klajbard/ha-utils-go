@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -18,7 +17,7 @@ import (
 
 func handleException() {
 	if e := recover(); e != nil {
-		fmt.Println("Recovering from the error: ", e)
+		log.Println("Recovering from the error: ", e)
 	}
 }
 
@@ -32,6 +31,7 @@ func main() {
 	go func() {
 		defer handleException()
 		for {
+			config.Conf.GetConf()
 			i := <-ticker
 			handleUpdateBB()
 			stockWatcher()

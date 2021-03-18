@@ -75,8 +75,11 @@ type EnableConfig struct {
 	Btc          bool `yaml:"btc"`
 }
 
+var cfg = flag.String("cfg", "config.yaml", "config file path")
+var Conf Configuration
+var Channels = map[string]string{}
+
 func (c *Configuration) GetConf() *Configuration {
-	cfg := flag.String("cfg", "config.yaml", "config file path")
 	flag.Parse()
 
 	conf, err := ioutil.ReadFile(*cfg)
@@ -87,16 +90,9 @@ func (c *Configuration) GetConf() *Configuration {
 		log.Println(err)
 	}
 
-	return c
-}
-
-var Conf Configuration
-
-var Channels = map[string]string{}
-
-func init() {
-	Conf.GetConf()
-	for _, channel := range Conf.Channels {
+	for _, channel := range c.Channels {
 		Channels[channel.Name] = channel.Id
 	}
+
+	return c
 }
