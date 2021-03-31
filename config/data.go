@@ -1,10 +1,15 @@
 package config
 
 import (
+	"encoding/json"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
+	"os"
 
+	"../types"
 	"gopkg.in/yaml.v2"
 )
 
@@ -80,12 +85,27 @@ var Conf Configuration
 var Channels = map[string]string{}
 
 func (c *Configuration) GetConf() *Configuration {
-	flag.Parse()
-
-	conf, err := ioutil.ReadFile(*cfg)
+	var conf []byte
+	resp, err := http.Get(fmt.Sprintf("https://%s@cdn.klajbar.com/conf/config.yaml", os.Getenv("CDN_CRED")))
 	if err != nil {
 		log.Println(err)
+		flag.Parse()
+		conf, err = ioutil.ReadFile(*cfg)
+		if err != nil {
+			log.Println(err)
+		}
+
+	} else {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		configData := types.AWSResponse{}
+
+		err = json.Unmarshal([]byte(string(respBody)), &configData)
+		if err != nil {
+			log.Fatal(err)
+		}
+		conf = configData.Body.Data
 	}
+
 	if err := yaml.Unmarshal(conf, c); err != nil {
 		log.Println(err)
 	}
