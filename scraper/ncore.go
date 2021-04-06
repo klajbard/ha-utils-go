@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"../utils"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/klajbard/ha-utils-go/utils"
 )
 
 var ncoreMap = []string{

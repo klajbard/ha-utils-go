@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"../slack"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/klajbard/ha-utils-go/slack"
 )
 
 func SetState(sensor string, payload interface{}) {

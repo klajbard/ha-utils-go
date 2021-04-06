@@ -1,15 +1,14 @@
-// Get current month cost of AWS services
 package awscost
 
 import (
 	"log"
 	"time"
 
-	"../config"
-	"../utils"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/costexplorer"
+	"github.com/klajbard/ha-utils-go/config"
+	"github.com/klajbard/ha-utils-go/utils"
 	"gopkg.in/mgo.v2/bson"
 )
 

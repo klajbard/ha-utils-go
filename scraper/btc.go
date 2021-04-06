@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"os"
 
-	"../types"
-	"../utils"
+	"github.com/klajbard/ha-utils-go/types"
+	"github.com/klajbard/ha-utils-go/utils"
 )
 
 func UpdateBTC() {

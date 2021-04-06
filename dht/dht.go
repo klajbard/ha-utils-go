@@ -1,10 +1,9 @@
-// Gets DHT22 sensor data of Raspberry GPIO
 package dht
 
 import (
 	"fmt"
 
-	"../utils"
+	"github.com/klajbard/ha-utils-go/utils"
 	"github.com/d2r2/go-dht"
 )
 

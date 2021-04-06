@@ -3,9 +3,9 @@ package scraper
 import (
 	"fmt"
 
-	"../config"
-	"../slack"
-	"../utils"
+	"github.com/klajbard/ha-utils-go/config"
+	"github.com/klajbard/ha-utils-go/slack"
+	"github.com/klajbard/ha-utils-go/utils"
 	"gopkg.in/mgo.v2/bson"
 )
 

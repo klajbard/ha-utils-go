@@ -4,7 +4,7 @@ import (
 	"errors"
 	"log"
 
-	"../config"
+	"github.com/klajbard/ha-utils-go/config"
 	"github.com/slack-go/slack"
 )
 

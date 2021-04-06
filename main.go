@@ -7,12 +7,12 @@ import (
 	"syscall"
 	"time"
 
-	"./awscost"
-	"./bumpha"
-	"./config"
-	"./dht"
-	"./scraper"
-	"./sg"
+	"github.com/klajbard/ha-utils-go/awscost"
+	"github.com/klajbard/ha-utils-go/bumpha"
+	"github.com/klajbard/ha-utils-go/config"
+	"github.com/klajbard/ha-utils-go/dht"
+	"github.com/klajbard/ha-utils-go/scraper"
+	"github.com/klajbard/ha-utils-go/sg"
 )
 
 func handleException() {

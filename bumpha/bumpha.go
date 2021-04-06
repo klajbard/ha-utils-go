@@ -1,4 +1,3 @@
-// Bumps an item on hardverapro
 package bumpha
 
 import (
@@ -11,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"../config"
-	"../utils"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/klajbard/ha-utils-go/config"
+	"github.com/klajbard/ha-utils-go/utils"
 )
 
 // Sends a bump for the selected item on "hardverapro"

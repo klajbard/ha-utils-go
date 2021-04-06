@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"../types"
+	"github.com/klajbard/ha-utils-go/types"
 	"gopkg.in/yaml.v2"
 )
 

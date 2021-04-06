@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"../utils"
+	"github.com/klajbard/ha-utils-go/utils"
 )
 
 // Queries fixer.io for currencies HUF based and
