@@ -65,19 +65,20 @@ type ItemStock struct {
 }
 
 type EnableConfig struct {
-	Bestbuy      bool `yaml:"bestbuy"`
-	Stockwatcher bool `yaml:"stockwatcher"`
-	Marketplace  bool `yaml:"marketplace"`
-	Steamgifts   bool `yaml:"steamgifts"`
-	Dht          bool `yaml:"dht"`
-	Arukereso    bool `yaml:"arukereso"`
-	Covid        bool `yaml:"covid"`
-	Bumphva      bool `yaml:"bumphva"`
-	Ncore        bool `yaml:"ncore"`
-	Fuel         bool `yaml:"fuel"`
-	Fixerio      bool `yaml:"fixerio"`
-	Awscost      bool `yaml:"awscost"`
-	Btc          bool `yaml:"btc"`
+	Bestbuy        bool `yaml:"bestbuy"`
+	Stockwatcher   bool `yaml:"stockwatcher"`
+	Marketplace    bool `yaml:"marketplace"`
+	Steamgifts     bool `yaml:"steamgifts"`
+	Dht            bool `yaml:"dht"`
+	Arukereso      bool `yaml:"arukereso"`
+	Covid          bool `yaml:"covid"`
+	Bumphva        bool `yaml:"bumphva"`
+	Ncore          bool `yaml:"ncore"`
+	Fuel           bool `yaml:"fuel"`
+	Fixerio        bool `yaml:"fixerio"`
+	Awscost        bool `yaml:"awscost"`
+	Btc            bool `yaml:"btc"`
+	LogConsumption bool `yaml:"logcons"`
 }
 
 var cfg = flag.String("cfg", "config.yaml", "config file path")

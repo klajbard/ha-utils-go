@@ -11,6 +11,7 @@ import (
 	"github.com/klajbard/ha-utils-go/bumpha"
 	"github.com/klajbard/ha-utils-go/config"
 	"github.com/klajbard/ha-utils-go/dht"
+	"github.com/klajbard/ha-utils-go/hass"
 	"github.com/klajbard/ha-utils-go/scraper"
 	"github.com/klajbard/ha-utils-go/sg"
 )
@@ -35,6 +36,7 @@ func main() {
 			i := <-ticker
 			handleUpdateBB()
 			stockWatcher()
+			handleNotifyConsumption()
 			if i%6 == 0 {
 				handleMarketplace()
 			}
@@ -43,6 +45,7 @@ func main() {
 				handleUpdateDHT()
 				queryArukereso()
 				handleBTC()
+				handleSaveConsumption()
 			}
 			if i%180 == 0 {
 				handleUpdateCovid()
@@ -70,6 +73,21 @@ func main() {
 			log.Print("\n\nSIGTERM received. Shutting down...\n")
 			return
 		}
+	}
+}
+
+func handleSaveConsumption() {
+	if !config.Conf.Enable.LogConsumption || os.Getenv("HASS_URL") == "" || os.Getenv("HASS_TOKEN") == "" {
+		return
+	}
+	hass.SaveCons()
+}
+
+func handleNotifyConsumption() {
+	hour, min, _ := time.Now().Clock()
+	hass.GetYesterdayCons()
+	if !config.Conf.Enable.LogConsumption || !(hour == 10 && min == 0) {
+		return
 	}
 }
 
