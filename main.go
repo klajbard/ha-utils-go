@@ -36,9 +36,10 @@ func main() {
 			i := <-ticker
 			handleUpdateBB()
 			stockWatcher()
-			handleNotifyConsumption()
 			if i%6 == 0 {
 				handleMarketplace()
+				timerMux()
+				handleConsNotif()
 			}
 			if i%60 == 0 {
 				handleSG()
@@ -83,12 +84,18 @@ func handleSaveConsumption() {
 	hass.SaveCons()
 }
 
-func handleNotifyConsumption() {
-	hour, min, _ := time.Now().Clock()
-	if !config.Conf.Enable.LogConsumption || !(hour == 10 && min == 0) {
-		return
+func timerMux() {
+	now := time.Now()
+	if now.Format("15:04") == "00:00" {
+		config.HandleResetCounter()
 	}
-	hass.GetYesterdayCons()
+}
+
+func handleConsNotif() {
+	now := time.Now()
+	if config.Conf.Enable.LogConsumption && config.GetCounter("cons").Available && now.Hour() >= 10 {
+		hass.GetYesterdayCons()
+	}
 }
 
 func handleMarketplace() {

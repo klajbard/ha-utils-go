@@ -88,7 +88,7 @@ var Channels = map[string]string{}
 func (c *Configuration) GetConf() *Configuration {
 	var conf []byte
 	resp, err := http.Get(fmt.Sprintf("https://%s@cdn.klajbar.com/conf/config.yaml", os.Getenv("CDN_CRED")))
-	if err != nil {
+	if true {
 		log.Println(err)
 		flag.Parse()
 		conf, err = ioutil.ReadFile(*cfg)

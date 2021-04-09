@@ -98,5 +98,6 @@ func GetYesterdayCons() {
 
 	price := 37 * sum / 1000
 	sb.WriteString(fmt.Sprintf("Total: *%.1f W %.1f Ft*\n", sum, price))
+	config.UpdateCounter("cons")
 	slack.NotifySlack("consumption", sb.String(), ":desktop_computer:")
 }
