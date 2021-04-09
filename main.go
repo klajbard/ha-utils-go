@@ -85,10 +85,10 @@ func handleSaveConsumption() {
 
 func handleNotifyConsumption() {
 	hour, min, _ := time.Now().Clock()
-	hass.GetYesterdayCons()
 	if !config.Conf.Enable.LogConsumption || !(hour == 10 && min == 0) {
 		return
 	}
+	hass.GetYesterdayCons()
 }
 
 func handleMarketplace() {
