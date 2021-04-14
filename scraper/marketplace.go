@@ -22,7 +22,7 @@ type Watcher struct {
 // Queries Jofogas for a specific 'item' and
 // sends message to Slack if theres new item
 func GetJofogas(item string) {
-	url := fmt.Sprintf("https://www.jofogas.hu/magyarorszag?f=p&q=%s", item)
+	url := fmt.Sprintf("https://www.jofogas.hu/magyarorszag", item)
 
 	scrapeItem(url, ".general-item", ".subject", ".price-value")
 }
