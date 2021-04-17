@@ -21,7 +21,6 @@ func HandleResetCounter() {
 
 func GetCounter(name string) *CounterType {
 	counter := CounterType{}
-	log.Println(name)
 	err := Counter.Find(bson.M{"name": name}).One(&counter)
 	if err != nil {
 		log.Println(err)
