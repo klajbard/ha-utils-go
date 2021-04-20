@@ -27,12 +27,13 @@ func main() {
 	tickerCount := 0
 	ticker := make(chan int)
 	terminate := make(chan os.Signal)
+	config.Conf.GetConf()
+
 	signal.Notify(terminate, syscall.SIGTERM, syscall.SIGINT)
 
 	go func() {
 		defer handleException()
 		for {
-			config.Conf.GetConf()
 			i := <-ticker
 			handleUpdateBB()
 			stockWatcher()
