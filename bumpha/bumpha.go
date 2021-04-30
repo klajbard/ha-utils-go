@@ -43,7 +43,11 @@ func Update(hva_id string, item config.HaItem) {
 	pid_link, _ := doc.Find(".row.uad-actions a.btn.btn-secondary.btn-sm").Attr("href")
 
 	re := regexp.MustCompile(`uadid=\d+`)
-	pid := strings.Split(re.FindString(pid_link), "=")[1]
+	pidArr := strings.Split(re.FindString(pid_link), "=")
+	if len(pidArr) < 2 {
+		return
+	}
+	pid := pidArr[1]
 
 	if strings.Contains(last_bump, "napja") || lastBumpHours(last_bump) >= item.Hour {
 		bumpItem(hva_id, item.Id, pid)
