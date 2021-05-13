@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -14,11 +15,14 @@ import (
 	"github.com/klajbard/ha-utils-go/hass"
 	"github.com/klajbard/ha-utils-go/scraper"
 	"github.com/klajbard/ha-utils-go/sg"
+	"github.com/klajbard/ha-utils-go/slack"
 )
 
 func handleException() {
 	if e := recover(); e != nil {
-		log.Println("Recovering from the error: ", e)
+		err := fmt.Sprintf("Recovering from the error: %v", e)
+		slack.NotifySlack("hass", err, ":exclamation:")
+		main()
 	}
 }
 
