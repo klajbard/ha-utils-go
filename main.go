@@ -116,13 +116,16 @@ func handleMarketplace() {
 }
 
 func handleHABump() {
-	if !config.Conf.Enable.Bumphva {
+	if !config.Conf.Enable.Bumphva && !config.GetCounter("bumphva").Available {
 		return
 	}
 	log.Println("Bump HVA")
 	for _, user := range config.Conf.HaBump {
 		for _, item := range user.Items {
-			bumpha.Update(user.Identifier, item)
+			stop := bumpha.Update(user.Identifier, item)
+			if stop {
+				config.UpdateCounter("bumphva")
+			}
 		}
 	}
 }

@@ -15,7 +15,7 @@ import (
 	"github.com/klajbard/ha-utils-go/utils"
 )
 
-// Sends a bump for the selected item on "hardverapro"
+// Update sends a bump for the selected item on "hardverapro"
 // *fid* - payload value of 'fidentifier' when bumping
 // To gather the fidentifier value, the easiest way is to capture
 // from Chrome Dev Tools -> Network tab. Check the 'Preserve log'
@@ -23,7 +23,7 @@ import (
 // post request of "felhoz.php", then check the request body
 // *name* - name of the item
 // The easiest way is to simply copy from the URL
-func Update(hva_id string, item config.HaItem) {
+func Update(hvaID string, item config.HaItem) (stop bool) {
 	if !shouldBump(item.Start) {
 		return
 	}
@@ -39,22 +39,23 @@ func Update(hva_id string, item config.HaItem) {
 		utils.NotifyError(err)
 	}
 
-	last_bump := doc.Find("[title=\"Utolsó UP dátuma\"]").Text()
-	pid_link, _ := doc.Find(".row.uad-actions a.btn.btn-secondary.btn-sm").Attr("href")
+	lastBump := doc.Find("[title=\"Utolsó UP dátuma\"]").Text()
+	pidLink, _ := doc.Find(".row.uad-actions a.btn.btn-secondary.btn-sm").Attr("href")
 
 	re := regexp.MustCompile(`uadid=\d+`)
-	pidArr := strings.Split(re.FindString(pid_link), "=")
+	pidArr := strings.Split(re.FindString(pidLink), "=")
 	if len(pidArr) < 2 {
 		return
 	}
 	pid := pidArr[1]
 
-	if strings.Contains(last_bump, "napja") || lastBumpHours(last_bump) >= item.Hour {
-		bumpItem(hva_id, item.Id, pid)
+	if strings.Contains(lastBump, "napja") || lastBumpHours(lastBump) >= item.Hour {
+		stop = bumpItem(hvaID, item.Id, pid)
 	}
+	return
 }
 
-func bumpItem(hva_id, fid, pid string) {
+func bumpItem(hvaID, fid, pid string) (stop bool) {
 	payload := "fidentifier=" + fid
 	link := "https://hardverapro.hu/muvelet/apro/felhoz.php?id=" + pid
 	req, err := http.NewRequest("POST", link, strings.NewReader(payload))
@@ -66,7 +67,7 @@ func bumpItem(hva_id, fid, pid string) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
 	req.Header.Set("Accept", "application/json, text/javascript, */*; q=0.01")
 	req.Header.Set("Content-Length", strconv.Itoa(len(payload)))
-	req.AddCookie(&http.Cookie{Name: "identifier", Value: hva_id})
+	req.AddCookie(&http.Cookie{Name: "identifier", Value: hvaID})
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
@@ -80,7 +81,11 @@ func bumpItem(hva_id, fid, pid string) {
 		return
 	}
 
+	if strings.Contains(string(body), "Nincs t\\u00f6bb ingyenes upod m\\u00e1ra!") {
+		stop = true
+	}
 	log.Println("[BUMPHA] " + string(body))
+	return
 }
 
 func shouldBump(start int) bool {
@@ -88,11 +93,11 @@ func shouldBump(start int) bool {
 	return now >= start
 }
 
-func lastBumpHours(last_bump string) int {
-	if strings.Contains(last_bump, "órája") {
+func lastBumpHours(lastBump string) int {
+	if strings.Contains(lastBump, "órája") {
 		re := regexp.MustCompile(`\d`)
-		hours_ago, _ := strconv.Atoi(re.FindString(last_bump))
-		return hours_ago
+		hoursAgo, _ := strconv.Atoi(re.FindString(lastBump))
+		return hoursAgo
 	}
 	return 0
 }
