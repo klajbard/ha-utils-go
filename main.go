@@ -50,7 +50,7 @@ func main() {
 				handleSG()
 				handleUpdateDHT()
 				queryArukereso()
-				handleBTC()
+				handleCrypto()
 				handleSaveConsumption()
 			}
 			if i%180 == 0 {
@@ -213,10 +213,10 @@ func handleAwsCost() {
 	awscost.Update()
 }
 
-func handleBTC() {
-	if !config.Conf.Enable.Btc || os.Getenv("BTC_API") == "" {
+func handleCrypto() {
+	if !config.Conf.Enable.Crypto || os.Getenv("CRYPTO_API") == "" {
 		return
 	}
-	log.Println("BTC")
-	scraper.UpdateBTC()
+	log.Println("Update Crypto")
+	scraper.UpdateCrypto()
 }

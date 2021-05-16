@@ -77,7 +77,7 @@ type EnableConfig struct {
 	Fuel           bool `yaml:"fuel"`
 	Fixerio        bool `yaml:"fixerio"`
 	Awscost        bool `yaml:"awscost"`
-	Btc            bool `yaml:"btc"`
+	Crypto         bool `yaml:"crypto"`
 	LogConsumption bool `yaml:"logcons"`
 }
 
@@ -88,7 +88,7 @@ var Channels = map[string]string{}
 func (c *Configuration) GetConf() *Configuration {
 	var conf []byte
 	resp, err := http.Get(fmt.Sprintf("https://%s@cdn.klajbar.com/conf/config.yaml", os.Getenv("CDN_CRED")))
-	if err != nil {
+	if err != nil || os.Getenv("DEBUG") == "true" {
 		log.Println(err)
 		flag.Parse()
 		conf, err = ioutil.ReadFile(*cfg)
