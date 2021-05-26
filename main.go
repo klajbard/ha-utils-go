@@ -50,9 +50,9 @@ func main() {
 				queryArukereso()
 				handleCrypto()
 				handleSaveConsumption()
+				handleSG()
 			}
 			if i%180 == 0 {
-				handleSG()
 				handleUpdateCovid()
 				handleHABump()
 			}
@@ -192,7 +192,6 @@ func handleUpdateFuel() {
 		return
 	}
 	log.Println("Fuel")
-	sg.QueryEntry()
 	scraper.UpdateFuelPrice()
 }
 
