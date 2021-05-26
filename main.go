@@ -22,7 +22,6 @@ func handleException() {
 	if e := recover(); e != nil {
 		err := fmt.Sprintf("Recovering from the error: %v", e)
 		slack.NotifySlack("hass", err, ":exclamation:")
-		main()
 	}
 }
 
@@ -47,13 +46,13 @@ func main() {
 				handleConsNotif()
 			}
 			if i%60 == 0 {
-				handleSG()
 				handleUpdateDHT()
 				queryArukereso()
 				handleCrypto()
 				handleSaveConsumption()
 			}
 			if i%180 == 0 {
+				handleSG()
 				handleUpdateCovid()
 				handleHABump()
 			}
