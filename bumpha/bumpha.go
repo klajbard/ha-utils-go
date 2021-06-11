@@ -95,7 +95,7 @@ func shouldBump(start int) bool {
 
 func lastBumpHours(lastBump string) int {
 	if strings.Contains(lastBump, "órája") {
-		re := regexp.MustCompile(`\d`)
+		re := regexp.MustCompile(`\d+`)
 		hoursAgo, _ := strconv.Atoi(re.FindString(lastBump))
 		return hoursAgo
 	}
